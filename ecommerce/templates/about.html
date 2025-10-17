@@ -1,0 +1,64 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/terms_and_service.css' %}" rel="stylesheet">
+{% endblock %}
+  
+{% block content %}
+<div class="container">
+        <div class="sidebar">
+            <a href="{% url 'store:terms_and_service' %}" >Terms of Service</a>
+            <a href="{% url 'store:policy' %}">Privacy Policy</a>
+            <a href="{% url 'store:refund_and_return' %}">Refund and Return Policy</a>
+            <a href="{% url 'store:about' %}" class="active">About us</a>
+        </div>
+                <div class="content">
+
+ <h2>About hello_bajar</h2>
+  <p class="mission-statement">"Bringing quality, connection, and community to your doorstep."</p>
+
+  <h2>Our Story</h2>
+  <p>Born out of a simple idea—to create a local marketplace that feels like a friendly neighbor—hello_bajar is more than just a store. The word **"Miteri"** comes from Nepali, meaning **"friendship"**, and that's the spirit we infuse into everything we do. We started small, with a handful of dedicated local artisans and farmers, and have grown into a trusted online destination for curated goods that are both high-quality and ethically sourced.</p>
+
+  <h2>Our Commitment</h2>
+  <p>We believe that shopping should be a joyful and meaningful experience. That's why we meticulously select every item in our catalog, focusing on products that tell a story. From handcrafted accessories to fresh, organic produce, each item at hello_bajar represents our commitment to excellence and our support for small-scale creators. We're dedicated to building a community where customers and creators connect, fostering a cycle of trust and mutual respect.</p>
+
+  <h2>Our Values</h2>
+  <p>Our core values guide every decision we make:</p>
+  
+  <div class="value-item">
+    <h2>Quality</h2>
+    <p>We never compromise on quality. Every product is carefully vetted to ensure it meets our high standards.</p>
+  </div>
+  
+  <div class="value-item">
+    <h2>Community</h2>
+    <p>We prioritize supporting local businesses and artisans, helping their passion projects thrive.</p>
+  </div>
+
+  <div class="value-item">
+    <h2>Trust</h2>
+    <p>We operate with transparency and honesty, building a relationship of trust with our customers.</p>
+  </div>
+  
+  <div class="value-item">
+    <h2>Sustainability</h2>
+    <p>We are committed to offering products that are environmentally friendly and promote a sustainable lifestyle.</p>
+  </div>
+
+  <p>Thank you for being a part of the hello_bajar family. Your support helps us continue our mission of building a better, more connected marketplace for everyone.</p>
+</div>
+    {% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/.js' %}"></script>
+{% endblock %}
+  
+

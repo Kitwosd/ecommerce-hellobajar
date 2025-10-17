@@ -1,0 +1,225 @@
+<style>
+    /* === Footer Wrapper === */
+    .footer-container {
+        background-color: #131921;
+        color: #ffffff;
+        padding: 2rem 1rem;
+    }
+
+    /* ensure links/icons inside stay white */
+    .footer-container a,
+    .footer-container i,
+    .footer-container p,
+    .footer-container h6,
+    .footer-container span,
+    .footer-container small {
+        color: #ffffff !important;
+        display: flex;
+    }
+
+    .footer-container a:hover {
+        color: #f0c14b !important;
+        text-decoration: none;
+    }
+
+    .footer-container .text-dark {
+        color: #ffffff !important;
+    }
+
+    /* tech icon hover effects */
+    .tech-stack {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .tech-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tech-icon:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .tech-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+
+    .tech-icon:hover::before {
+        transform: translateX(100%);
+    }
+
+
+    .tech-icon svg {
+        width: 20px;
+        height: 20px;
+        z-index: 1;
+    }
+
+    /* Payment icons styling */
+    .payment-icons img {
+        margin: 0 0.25rem;
+        border-radius: 4px;
+    }
+
+    .read {
+        padding-left: 0 !important;
+        color: #131921;
+        display: flex;
+    }
+
+    .sub-title {
+        opacity: 0.6;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+        .tech-stack {
+            gap: 0.75rem;
+            justify-content: flex-start;
+        }
+
+        .tech-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .tech-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .footer-container {
+            padding: 1.5rem 1rem;
+        }
+
+    }
+  .social {
+    text-decoration: none; 
+    color: inherit;
+}  
+</style>
+
+<!-- inside <head> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<footer class="footer mt-auto py-0 border-top">
+    <div class="footer-container">
+        <div class="container-fluid">
+            <div class="row">
+
+                <!-- Contact -->
+                <div class="col-md-3 mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone me-2"></i>
+                        <h4 class="mb-15">Have Question? Reach us</h4>
+                    </div>
+                    <p class="sub-title" fs-5 mb-1">+984125489</p>
+                    <p class="sub-title mb-1">Email: <a href="mailto:info@miterimart.com.au"
+                            class="sub-title text-decoration-none">sample@miterimart@gmail.com</a></p>
+                    <p class="sub-title mb-1"><a href="#" class="text-decoration-none">Chat on WhatsApp</a></p>
+                    <div class="mt-3">
+
+                        <span class="sub-title me-2">Follow Us:</span>
+                        <div class="tech-stack">
+                            <a class="social" href="">
+                                <div class="tech-icon html5" title="HTML5">
+                                    <i class="bi bi-facebook"></i>
+                                </div>
+                            </a>
+
+                            <div class="tech-icon css3" title="CSS3">
+                                <i class="bi bi-instagram"></i>
+                            </div>
+
+                            <div class="tech-icon javascript" title="JavaScript">
+                                <i class="bi bi-whatsapp"></i>
+                            </div>
+
+                            <div class="tech-icon react" title="React">
+                                <i class="bi bi-tiktok"></i>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Information -->
+                <div class="col-md-3 mb-4">
+                    <ul class="list-unstyled">
+                        <h4 class="bold">More Information</h4>
+                        <li class="sub-title"><a href="{% url 'store:faqs' %}" class="text-decoration-none">FAQs</a>
+                        </li>
+                        <li class="sub-title"><a href="#" class="text-decoration-none">Blogs</a></li>
+                        <li class="sub-title"><a href="{% url 'store:contacts' %}" class="text-decoration-none">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="">Quick Links</h4>
+                    <ul class="list-unstyled">
+                        <li class="sub-title"><a href="{% url 'store:terms_and_service' %}" class="text-decoration-none">Terms of Service</a></li>
+                        <li class="sub-title"><a href="{% url 'store:policy' %}" class="text-decoration-none">Privacy Policy</a></li>
+                        <li class="sub-title"><a href="{% url 'store:refund_and_return' %}" class="text-decoration-none">Refund and Return Policy</a></li>
+                        <li class="sub-title"><a href="{% url 'store:about' %}" class="text-decoration-none">About us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="">Newsletter Signup</h4>
+                    <p class="sub-title small">
+                        Subscribe to the mailing list to receive updates on new arrivals and other discounts
+                    </p>
+                    <form method="post" action="#">
+                        <!-- {% csrf_token %} -->
+                        <div class="input-group">
+                            <input type="email" name="email" class="form-control" placeholder="Your email address"
+                                required>
+                            <button class=" btn btn-warning" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <p class="sub-title mb-0 small">
+                    &copy; 2025 <strong>hello bajar</strong>. All rights reserved.
+                    Powered by:
+                </p>
+                <div class="d-flex align-items-center mt-2 mt-md-0 payment-icons">
+                    <span class="sub-title me-2">We Accept:</span>
+                    <i class="sub-title fa-brands fa-cc-visa fa-2x me-2"></i>
+                    <i class="sub-title fa-brands fa-cc-paypal fa-2x"></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>

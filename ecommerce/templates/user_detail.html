@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/user_detail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<style></style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2 dashboard-menu">
+      <div class="list-group">
+        <a href="{% url 'store:user_home' %}" class="list-group-item list-group-item-action">
+          <i class="fa fa-chart-line"></i> Dashboard
+        </a>
+        <a href="{% url 'store:user_order' %}" class="list-group-item list-group-item-action">
+          <i class="fa fa-bag-shopping"></i> Order
+        </a>
+        <a href="{% url 'store:wish_list' %}" class="list-group-item list-group-item-action">
+          <i class="fa fa-heart"></i> Wishlist
+        </a>
+        <a href="{% url 'store:loyalty' %}" class="list-group-item list-group-item-action">
+          <i class="fa fa-coins"></i> Loyalty Points
+        </a>
+        <a href="{% url 'store:user_address' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-location-dot"></i> My Address
+        </a>
+        <a href="{% url 'store:user_detail' %}" class="list-group-item list-group-item-action active">
+          <i class="fa fa-user"></i> Account Details
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+          <i class="fa fa-right-from-bracket"></i> Log Out
+        </a>
+      </div>
+    </div>
+
+<div class="col-md-9 col-lg-8 px-4 mx-5 dashboard-content ">
+  <h2>Account Detail</h2>
+
+      <form>
+        <div class="mb-3">
+          <input type="text" class="form-control" value="Riken" placeholder="Full Name">
+        </div>
+
+        <div class="mb-3">
+          <input type="email" class="form-control" value="rikenmaharjan4@gmail.com" placeholder="Email Address">
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md">
+            <input type="password" class="form-control" value="currentpassword" disabled placeholder="Current Password">
+          </div>
+          <div class="col-md">
+            <input type="password" class="form-control" placeholder="New Password *" required>
+          </div>
+          <div class="col-md">
+            <input type="password" class="form-control" placeholder="Confirm Password *" required>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md">
+            <input type="tel" class="form-control" placeholder="Contact Number">
+          </div>
+          <div class="col-md">
+            <select class="form-select">
+              <option value="" disabled selected>Select your Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+              <option value="prefer-not-to-say">Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Profile Picture</label>
+          <div class="input-group">
+            <input type="file" class="form-control" id="profile-picture" accept="image/*" onchange="updateFileName(this)">
+          </div>
+          <small id="file-status" class="text-muted">No file chosen</small>
+        </div>
+
+        <button type="submit" class="save btn-primary">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</div>{% endblock %}
+
+{% block extra_js %}
+<!-- Replace with your actual JS if needed -->
+<script src="{% static 'js/user_detail.js' %}"></script>
+{% endblock %}

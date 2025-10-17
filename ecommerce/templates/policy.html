@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/terms_and_service.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="sidebar">
+    <a href="{% url 'store:terms_and_service' %}">Terms of Service</a>
+    <a href="{% url 'store:policy' %}" class="active">Privacy Policy</a>
+    <a href="{% url 'store:refund_and_return' %}">Refund and Return Policy</a>
+    <a href="{% url 'store:about' %}">About us</a>
+  </div>
+  <div class="content">
+    <p>At hello_bajar, your satisfaction is our priority. We are committed to ensuring that all products meet our
+      high-quality standards and your expectations. If you are not fully satisfied with your purchase, please refer to
+      our return and refund policy below:</p>
+
+    <h2>Faulty Products</h2>
+    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Integer fermentum magna et augue suscipit, quis lobortis est dapibus.
+      Ut pulvinar neque nec dolor commodo efficitur.
+      Duis blandit lorem eget risus gravida congue quis et sapien.</p>
+
+    <p> Quisque mollis mi a lorem sagittis, non hendrerit ligula porttitor.
+      Donec tempus nisl id leo vulputate mattis.
+      Integer vehicula massa vitae metus malesuada efficitur.
+      Phasellus ut lorem vitae lorem sodales commodo.
+      Nullam posuere tortor id egestas feugiat.</p>
+
+
+    <p> Nam semper mauris a lacus gravida, ut rhoncus augue varius.
+      Cras facilisis risus sit amet vestibulum mollis.
+      Donec suscipit mi et semper ullamcorper.
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/.js' %}"></script>
+{% endblock %}

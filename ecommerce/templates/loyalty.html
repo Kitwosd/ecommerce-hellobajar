@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/loyalty.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<style></style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 dashboard-menu">
+            <div class="list-group">
+                <a href="{% url 'store:user_home' %}" class="list-group-item list-group-item-action">
+                    <i class="fa fa-chart-line"></i> Dashboard
+                </a>
+                <a href="{% url 'store:user_order' %}" class="list-group-item list-group-item-action">
+                    <i class="fa fa-bag-shopping"></i> Order
+                </a>
+                <a href="{% url 'store:wish_list' %}" class="list-group-item list-group-item-action">
+                    <i class="fa fa-heart"></i> Wishlist
+                </a>
+                <a href="{% url 'store:loyalty' %}" class="list-group-item list-group-item-action active">
+                    <i class="fa fa-coins"></i> Loyalty Points
+                </a>
+                <a href="{% url 'store:user_address' %}" class="list-group-item list-group-item-action ">
+                    <i class="fa fa-location-dot"></i> My Address
+                </a>
+                <a href="{% url 'store:user_detail' %}" class="list-group-item list-group-item-action ">
+                    <i class="fa fa-user"></i> Account Details
+                </a>
+                <a href="{% url 'store:user_registration' %}" class="list-group-item list-group-item-action">
+                    <i class="fa fa-right-from-bracket"></i> Log Out
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-lg-8 px-4 mx-5 dashboard-content ">
+            <h2>Account Detail</h2>
+            <div class="current-points">Current Points: <span id="currentPoints">0</span></div>
+
+            <div class="points-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="info-box">
+                You need <span id="pointsNeeded">2000</span> more points to redeem and get exciting discount.
+            </div>
+
+            <div class="coupon-container">
+    <div class="coupon-info">
+        <h2>Your Redeemed Coupons</h2>
+        <div class="no-coupons">You haven't redeemed any coupons yet.</div>
+    </div>
+    <table class="points-table">
+        <thead>
+            <tr>
+                <th>POINTS</th>
+                <th>AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="points-column">2000</td>
+                <td class="amount-column">R 10</td>
+            </tr>
+            <tr>
+                <td class="points-column">4000</td>
+                <td class="amount-column">Rs 22</td>
+            </tr>
+            <tr>
+                <td class="points-column">6000</td>
+                <td class="amount-column">Rs 35</td>
+            </tr>
+            <tr>
+                <td class="points-column">8000</td>
+                <td class="amount-column">Rs 49</td>
+            </tr>
+            <tr>
+                <td class="points-column">10000</td>
+                <td class="amount-column">Rs 64</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+    </div>
+</div>
+        {% endblock %}
+
+        {% block extra_js %}
+        <script src="{% static 'js/user_detail.js' %}"></script>
+        {% endblock %}

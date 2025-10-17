@@ -1,0 +1,130 @@
+
+/* Slider Container */
+ .container {
+    background-color:#f8f9fa;
+    padding: 4rem;
+}
+.heading{
+     font-weight: 700;
+     color: #3e3f29;
+}
+
+      .product-card {
+    height: 100%; /* ensure all cards stretch equally */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-name {
+    font-size: 20px;
+    line-height: 20px;          /* height of one line */
+    display: -webkit-box;        /* for WebKit multiline ellipsis */
+    -webkit-line-clamp: 1;       /* limit to 1 line */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* Fallback for non-WebKit browsers */
+    white-space: nowrap;         /* prevents text wrapping to new line */
+    word-break: break-word;      /* breaks long words if needed */
+
+    margin: 0 0 4px 0;
+    padding: 0;
+}
+
+
+
+.price {
+    text-align: left;
+    color: #999;
+    font-size: 1.1rem;
+    font-style: oblique;
+    font-family: "Franklin Gothic Medium";
+}
+.best-price {
+    font-size: 1.5rem;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+
+
+
+.btn-buy{
+  position: absolute;
+  left: 185px;
+  bottom: 17px;
+}
+.form-control:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.3rem rgba(13,110,253,.25); /* this is the "blue shadow" */
+}
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05); /* scale both X & Y */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* optional */
+}
+.container-fluid{
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+.category-container::-webkit-scrollbar {
+  height: 6px;
+}
+.category-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* Hover scale effect for each category item */
+
+.stock-status {
+    font-size: 0.85rem; /* smaller text */
+    margin-bottom: 0; /* remove bottom margin */
+}
+
+.stock-status i {
+    font-size: 0.9em; /* slightly smaller icon */
+}
+
+.stock-status.in-stock {
+    color: #28a745;
+}
+
+.stock-status.out-of-stock {
+    color: #dc3545;
+}
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+/* Show More button */
+#show-more-btn {
+    background-color: #3E3F29;
+    border-color: #d4a353;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+#show-more-btn:hover {
+    background-color: #c49441;
+    border-color: #c49441;
+    color: #fff;
+}
+.footer{
+    background-color: #3E3F29;
+}

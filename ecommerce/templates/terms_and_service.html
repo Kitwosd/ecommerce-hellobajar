@@ -1,0 +1,45 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/terms_and_service.css' %}" rel="stylesheet">
+{% endblock %}
+  
+{% block content %}
+<div class="container">
+        <div class="sidebar">
+            <a href="{% url 'store:terms_and_service' %}" class="active">Terms of Service</a>
+            <a href="{% url 'store:policy' %}">Privacy Policy</a>
+            <a href="{% url 'store:refund_and_return' %}">Refund and Return Policy</a>
+            <a href="{% url 'store:about' %}">About us</a>
+        </div>
+        <div class="content">
+            <p>At hello_bajar, your satisfaction is our priority. We are committed to ensuring that all products meet our high-quality standards and your expectations. If you are not fully satisfied with your purchase, please refer to our return and refund policy below:</p>
+            
+            <h2>Faulty Products</h2>
+            <p>If you receive a faulty or damaged product, please contact us within <strong>24 hours</strong> of receiving the goods. We will arrange a return and issue a full refund for the faulty item. Please note, you may be asked to provide evidence (such as photos) of the damage or defect for processing.</p>
+
+            <h2>Perishable Goods</h2>
+            <p>For highly perishable items such as meat, fish, and vegetables, we kindly request that you inspect your order immediately upon delivery. Any concerns regarding the condition or quality of these items must be reported at the time of delivery, while the delivery personnel are still present. This enables us to take prompt and appropriate action. Please note that returns for perishable goods will only be accepted under these conditions.</p>
+
+            <h2>Change of Mind</h2>
+            <p>If you simply change your mind, we offer a <strong>7-day return policy</strong> for non-perishable items. Returns are only accepted if the product is in its original, unopened packaging, and in resalable condition. Please note, the item must be returned within 7 days from the date of receipt. Returns for items that have been used or opened will not be accepted.</p>
+
+            <h2>Return Process</h2>
+            <p>To initiate a return or request a refund, please contact us at <span class="contact-info">info@miterimart.com.au</span> or call us at <span class="contact-info">0430967789</span>. We will guide you through the return process and provide the necessary instructions.</p>
+
+            <h2>Refunds</h2>
+            <p>After the product has been returned, we will process a refund to your original payment method. Please note that the refund may not be immediate and allow up to <strong>5-7 business days</strong> for the refund to be reflected in your account, depending on your bank or payment provider. Refunds will be processed once the return meets the conditions outlined in this policy.</p>
+        </div>
+    </div>
+    {% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/.js' %}"></script>
+{% endblock %}

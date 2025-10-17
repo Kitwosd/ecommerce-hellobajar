@@ -1,0 +1,263 @@
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            height: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .product-item {
+            text-align: center;
+        }
+        
+        .product-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .product-item h6 {
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            color: #333;
+        }
+        
+        .category-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #0F1111;
+            margin-bottom: 20px;
+        }
+        
+        .category-link {
+            color: #007185;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .category-link:hover {
+            color: #C7511F;
+            text-decoration: underline;
+        }
+        
+        .gaming-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 8px;
+            height: 100%;
+        }
+        
+        .gaming-section img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            margin: 20px 0;
+        }
+        
+        .kitchen-horizontal {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .kitchen-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .kitchen-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .body-bg {
+            background: #F1F0E4;
+            min-height: 100vh;
+        }
+        .slider-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 400px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+}
+
+.slider img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
+
+/* Arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.slider-arrow-left {
+    left: 10px;
+}
+
+.slider-arrow-right {
+    right: 10px;
+}
+
+/* Nav dots */
+.slider-nav {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.slider-nav a {
+    width: 12px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    display: block;
+    opacity: 0.5;
+}
+
+.slider-nav a:target {
+    opacity: 1;
+}
+
+/* Hide horizontal scrollbar for the slider but keep it scrollable */
+.slider::-webkit-scrollbar { display: none; }
+.slider { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+/* .slide { flex: 0 0 100%; height: 100%; }
+.slide img { width: 100%; height: 100%; object-fit: cover; display: block; } */
+
+/* Arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.slider-arrow-left {
+    left: 10px;
+}
+
+.slider-arrow-right {
+    right: 10px;
+} */
+
+/* Nav dots */
+.slider-nav {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.slider-nav a {
+    width: 12px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    display: block;
+    opacity: 0.5;
+}
+
+.slider-nav a.active { opacity: 1; }
+
+/* Hide horizontal scrollbar for the slider but keep it scrollable */
+.slider::-webkit-scrollbar { display: none; }
+.slider { -ms-overflow-style: none; scrollbar-width: none; }
+/* Prevent page-level horizontal scrollbar */
+body { overflow-x: hidden; }
+.slider-nav{
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-80%);
+    z-index: 1;
+}
+.slider-nav a{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+
+}
+.slider-nav a:hover{
+    opacity: 1;
+}
+
+/* Slider arrow controls */
+.slider-wrapper {
+  position: relative;
+}
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.slider-arrow:hover { background: rgba(0,0,0,0.6); }
+.slider-arrow-left { left: 10px; }
+.slider-arrow-right { right: 10px; }

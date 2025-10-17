@@ -1,0 +1,144 @@
+   .dashboard-menu {
+      min-height: 100vh;
+     
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .dashboard-menu .list-group-item {
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+    }
+    .dashboard-menu .list-group-item.active {
+      background-color: #7b5a29 !important;
+      border-color: #7b5a29 !important;
+      color: #fff !important;
+    }
+    .dashboard-content {
+        padding-top: 30px;
+    margin-left: 250 !important;
+
+    }
+  .dashboard-content h2{
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+
+
+.current-points {
+  font-size: 1.2rem; /* Reduced font size */
+  color: #2c5530;
+  margin-bottom: 15px; /* Reduced margin */
+  font-weight: 600;
+}
+
+.info-box {
+  background-color: #b8e6cc;
+  color: #2c5530;
+  padding: 15px; /* Reduced padding */
+  border-radius: 8px;
+  margin-bottom: 20px; /* Reduced margin */
+  font-size: 1rem; /* Reduced font size */
+  border-left: 4px solid #4a9960;
+  margin-bottom: px;
+}
+
+.points-table {
+  width: 50%;
+  border-collapse: collapse;
+  margin-bottom: 20px; /* Reduced margin */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.points-table th {
+  background-color: #e9ecef;
+  color: #6c757d;
+  padding: 10px 15px; /* Reduced padding for height */
+  text-align: left;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem; /* Reduced font size */
+  letter-spacing: 0.5px;
+}
+
+.points-table td {
+  padding: 12px 15px; /* Reduced padding for height */
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.95rem; /* Reduced font size */
+}
+
+.points-table tr:last-child td {
+  border-bottom: none;
+}
+
+.points-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.points-table tr:hover {
+  background-color: #e8f5e8;
+}
+
+.points-column {
+  font-weight: 600;
+  color: #2c5530;
+}
+
+.amount-column {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.no-coupons {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 1rem; /* Reduced font size */
+  padding: 15px 0; /* Reduced padding */
+}
+
+.points-progress {
+  background-color: #e9ecef;
+  height: 6px; /* Reduced height */
+  border-radius: 3px;
+  margin: 15px 0; /* Reduced margin */
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 15px; /* Reduced padding */
+  }
+
+  h1 {
+    font-size: 1.8rem; /* Reduced font size */
+  }
+
+  .points-table th,
+  .points-table td {
+    padding: 10px; /* Reduced padding for smaller screens */
+    font-size: 0.9rem; /* Reduced font size for smaller screens */
+  }
+}
+.coupon-container {
+    display: flex;
+    justify-content: space-between; /* This spreads the items apart */
+    align-items: flex-start; /* Aligns items to the top of the container */
+    gap: 20px; /* Optional: adds space between the columns */
+}

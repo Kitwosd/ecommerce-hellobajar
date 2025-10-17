@@ -1,0 +1,71 @@
+ body {
+      background-color: #f8f9fa;
+    }
+    .dashboard-menu {
+        min-height: 100vh;
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .dashboard-menu .list-group-item {
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+    }
+    .dashboard-menu .list-group-item.active {
+      background-color: #7b5a29 !important;
+      border-color: #7b5a29 !important;
+      color: #fff !important;
+    }
+     .dashboard-content {
+        padding-top: 30px;
+    margin-left: 250 !important;
+
+    }
+    .dashboard-content h2 {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 2px;
+    }
+    .address-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #fff;
+    }
+    .address-box a {
+      font-size: 14px;
+      text-decoration: none;
+    }
+   .user-btn {
+  /* Basic styling for both buttons */
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.user-btn:hover {
+  /* Common hover effect */
+  opacity: 0.8;
+}
+
+/* Specific styling for the 'Add to Cart' button */
+button.user-btn:first-of-type {
+  background-color: #28a745; /* A shade of green */
+  color: white;
+}
+
+/* Specific styling for the 'Remove' button */
+button.user-btn:last-of-type {
+  background-color: #dc3545; /* A shade of red */
+  color: white;
+  margin-left: 10px; /* Adds spacing between the two buttons */
+}

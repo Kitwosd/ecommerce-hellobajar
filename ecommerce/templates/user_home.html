@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}user_home - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/user_home.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+ <div class="container-fluid">
+    <div class="row">
+      
+      <!-- Sidebar -->
+     <div class="col-md-3 col-lg-2 dashboard-menu">
+        <div class="list-group">
+          <a href="{% url 'store:user_home' %}" class="list-group-item list-group-item-action active">
+            <i class="fa fa-chart-line"></i> Dashboard
+          </a>
+          <a href="{% url 'store:user_order' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-bag-shopping"></i> Order
+          </a>
+          <a href="{% url 'store:wish_list' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-heart"></i> Wishlist
+          </a>
+          <a href="{% url 'store:loyalty' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-coins"></i> Loyalty Points
+          </a>
+          <a href="{% url 'store:user_address' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-location-dot"></i> My Address
+          </a>
+          <a href="{% url 'store:user_detail' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-user"></i> Account Details
+          </a>
+          <a href="{% url 'store:user_registration' %}" class="list-group-item list-group-item-action">
+            <i class="fa fa-right-from-bracket"></i> Log Out
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 col-lg-8 px-4 mx-5 dashboard-content">
+        <div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="card-title">Welcome to Our Website!</h1>
+                {% if user.is_authenticated %}
+                    <div class="alert alert-success">
+                        <h4>Hello, {{ user.username }}!</h4>
+                        <p>You are successfully logged in.</p>
+                        {% if user.first_name %}
+                            <p>Full Name: {{ user.first_name }} {{ user.last_name }}</p>
+                        {% endif %}
+                        {% if user.email %}
+                            <p>Email: {{ user.email }}</p>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'store:logout' %}" class="btn btn-danger">Logout</a>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p>Please log in to access your account.</p>
+                    </div>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="{% url 'store:login' %}" class="btn btn-success">Login</a>
+                        <a href="{% url 'store:register' %}" class="btn btn-success">Register</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+       
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/veg.js' %}"></script>
+{% endblock %}

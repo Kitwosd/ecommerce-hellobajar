@@ -1,0 +1,1181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/product_detail.css' %}" rel="stylesheet">
+<style>
+  /* Main Container & Layout */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+    gap: 30px;
+    /* This CSS property is not valid for the container itself, but kept for context if it were a flex/grid item. */
+    padding: 2rem;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  /* Image Gallery & Zoom */
+
+  /* Container for zoom */
+  .position-relative-main {
+    position: relative;
+    overflow: hidden;
+    cursor: zoom-in;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  /* Main product image inside the zoom container */
+  .product-image-main {
+    width: 100%;
+    /* Make it fill the 400px container */
+    max-height: 450px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    /* Kept for zoom effect */
+    transform-origin: center center;
+  }
+
+  /* Thumbnails */
+  /* .product-image-thumb {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border: 1px solid rgb(194, 194, 194);
+  border-radius: 5px;
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+.product-image-thumb.selected {
+  border-color: #dc3545;
+  border: 2px solid #dc3545;
+} */
+
+  .slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin: 10px auto;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .slider-container {
+    display: flex;
+    overflow-x: hidden;
+
+
+    /* Hide scrollbar and enable sliding */
+    scroll-behavior: smooth;
+    /* Smooth scrolling for transitions */
+    flex-wrap: nowrap;
+    /* Prevent items from wrapping to next line */
+    -webkit-overflow-scrolling: touch;
+    /* For smoother scrolling on iOS */
+    gap: 8px;
+    /* Gap between thumbnail items */
+  }
+
+  /* Make sure individual slider items take their space */
+  .slider-item {
+    flex: 0 0 auto;
+    /* Prevent items from growing or shrinking */
+    width: 25%;
+    /* Show 4 items per view (100% / 4) */
+    max-width: 60px;
+    /* Ensure a consistent max width for each thumb */
+  }
+
+  /* Adjust width for smaller screens to show fewer items if desired */
+  @media (max-width: 576px) {
+    .slider-item {
+      width: 33.33%;
+      /* Show 3 items on extra small screens */
+    }
+  }
+
+
+  .slider-btn {
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 18px 4px;
+    margin: 1vw;
+    cursor: pointer;
+    top: 50%;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+  }
+
+  .slider-btn:hover {
+    background-color: #131921;
+    color: white;
+  }
+
+  .prev-btn {
+    left: 0px;
+    /* Adjust position */
+  }
+
+  .next-btn {
+    right: 0px;
+    /* Adjust position */
+  }
+
+.product-image-thumb {
+  width: 80px; 
+  height: 80px; 
+  cursor: pointer;
+  border: 2px solid rgb(194, 194, 194);
+  border-radius: 5px;
+  object-fit: contain; /* Changed from 'cover' to 'contain' */
+  max-width: 100%;
+}
+
+
+  .product-image-thumb.selected {
+    border-color: #0e0203;
+    border: 2px solid #000000;
+  }
+
+  .product-image-color-filter {
+    width: 100%;
+    /* Fill its parent .slider-item */
+    height: 60px;
+    /* Fixed height for thumbnails */
+    object-fit: cover;
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 5px;
+    cursor: pointer;
+    height: auto;
+
+  }
+
+  .product-image-color-filter.selected {
+    border-color: #000000;
+    /* Red border for selected */
+    border: 2px solid #000000;
+  }
+
+  /* Product Cards (Featured Section) */
+  .product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  }
+
+  .product-card:hover {
+    transform: scale(1.05);
+    /* scale both X & Y */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* optional */
+  }
+
+  .product-card .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .product-name {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* limited to 2 lines for card product names */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+    flex-grow: 1;
+  }
+
+  /* Price & Discount */
+  .price {
+    text-align: left;
+    color: #999;
+    font-size: 19px;
+    font-weight: 500;
+    font-style: oblique;
+    font-family: "Franklin Gothic Medium";
+  }
+
+  .best-price {
+    font-size: 26px;
+    font-weight: 700;
+    color: #e74c3c;
+    font-weight: bold;
+  }
+
+  .discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 1;
+  }
+
+  .stock-status {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .stock-status.in-stock {
+    color: #28a745;
+  }
+
+  .stock-status.out-of-stock {
+    color: #dc3545;
+  }
+
+  /* Action Buttons */
+  .cart-btn,
+  .wishlist-btn {
+    /* Common styling for Add to Cart and Wishlist */
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #3e3f29;
+    color: white;
+  }
+
+  .cart-btn:hover,
+  .wishlist-btn:hover {
+    opacity: 0.8;
+  }
+
+  .product-btn {
+    background-color: #3e3f29;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid #3e3f29;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-btn:hover {
+    background-color: orangered;
+    border-color: orangered;
+    color: #fff;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+
+  /* Notification */
+  #notification {
+    display: none;
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    min-width: 300px;
+    background-color: green !important;
+    opacity: 0.8;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+
+  .wishlist-toast {
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    z-index: 1000;
+    min-width: 300px;
+    background-color: green !important;
+    color: white !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  /* State for the toast when it is SHOWN */
+  .wishlist-toast.show {
+    opacity: 1;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Tabs for Description/Reviews */
+  .tab-container {
+    display: flex;
+    gap: 30px;
+    width: 700px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 16px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    /* Changed border-width to border for better control */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 5px;
+  }
+
+  .tab:hover {
+    background-color: #8B4513;
+    color: white;
+  }
+
+  .tab.active {
+    background-color: #8B4513;
+    color: white;
+  }
+
+  .tab-content {
+    display: none;
+    padding: 30px;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Product Description Styles */
+  .product-header {
+    margin-bottom: 30px;
+  }
+
+  .product-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .product-details {
+    line-height: 1.8;
+    color: #555;
+  }
+
+  .product-details h3 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    font-size: 20px;
+  }
+
+  .product-details p {
+    margin-bottom: 15px;
+    padding: 8px 0;
+  }
+
+  .features-list {
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .features-list ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .features-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+    position: relative;
+    padding-left: 25px;
+  }
+
+  .features-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  .features-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* Review Form Rating Stars (Uiverse.io component) */
+  .rating:not(:checked)>input {
+    position: absolute;
+    appearance: none;
+  }
+
+  .rating:not(:checked)>label {
+    float: right;
+    cursor: pointer;
+    font-size: 30px;
+    color: #666;
+  }
+
+  .rating:not(:checked)>label:before {
+    content: "★";
+  }
+
+  .rating>input:checked+label:hover,
+  .rating>input:checked+label:hover~label,
+  .rating>input:checked~label:hover,
+  .rating>input:checked~label:hover~label,
+  .rating>label:hover~input:checked~label {
+    color: #e58e09;
+  }
+
+  .rating:not(:checked)>label:hover,
+  .rating:not(:checked)>label:hover~label {
+    color: #ff9e0b;
+  }
+
+  .rating>input:checked~label {
+    color: #ffa723;
+  }
+
+  /* Tab Media Queries */
+  @media (max-width: 768px) {
+    .tab {
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .tab-content {
+      padding: 20px;
+    }
+  }
+
+  /* Button & Other General Styles */
+  .btn {
+    background: #8B4513;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background: #6d3410;
+  }
+
+  .like-btn {
+    position: absolute;
+    bottom: 10px;
+    /* Adjust as needed */
+    right: 10px;
+    /* Adjust as needed */
+    background: whitesmoke;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 10;
+    /* Ensures it's above other elements */
+  }
+
+  .like-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1) !important;
+
+  }
+
+  .like-btn.liked i {
+    color: #e91e63 !important;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container rounded">
+  <div class="row">
+    <!-- Left: Image Gallery -->
+    <div class="col-md-6">
+      <!-- Main Image -->
+      <div class="position-relative-main">
+        <img id="mainImage" src="{% static 'images/apple.jpg' %}" class="product-image-main mb-3" alt="Main Product"
+          style="width:100%; height:auto; display:block;">
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="slider-wrapper">
+        <button class="slider-btn prev-btn">&lt;</button>
+        <div class="slider-container">
+          <div class="col-3 col-md-2 slider-item">
+            <img src="{% static 'images/apple.jpg' %}" class="product-image-thumb selected" alt="Black T-shirt">
+          </div>
+          <div class="col-3 col-md-2 slider-item">
+            <img src="{% static 'images/cherry.jpg' %}" class="product-image-thumb" alt="White T-shirt">
+          </div>
+          <div class="col-3 col-md-2 slider-item">
+            <img src="{% static 'images/apple.jpg' %}" class="product-image-thumb" alt="Brown T-shirt">
+          </div>
+        </div>
+        <button class="slider-btn next-btn">&gt;</button>
+      </div>
+
+    </div>
+
+    <!-- Right: Product Info -->
+    <div class="col-md-6">
+      <h2>Apple</h2>
+      <p>A stylish and comfortable unisex cotton T-shirt perfect for everyday wear.</p>
+
+      <ul>
+        <li>100% Premium Cotton</li>
+        <li>Comfort Fit</li>
+        <li>Versatile Style</li>
+      </ul>
+
+      <div class="price mb-3">
+        <span class=" text-muted text-decoration-line-through me-2">Rs 1500</span>
+        <span class="best-price text-danger ">Rs 1200</span>
+      </div>
+
+     
+      <!-- Quantity + Buttons -->
+      <div class="mb-3 d-flex align-items-center gap-2">
+        <label for="qty" class="mb-0">Quantity:</label>
+        <input type="number" id="qty" class="form-control" value="1" min="1" max="10" style="width:80px;">
+      </div>
+
+      <div class="mb-3 d-flex gap-2">
+        <button class="cart-btn flex-fill" id="addnotificationbtn">ADD TO CART &nbsp; <i class="bi bi-cart3"></i>
+        </button>
+        <div id="notification">
+          <i class="bi bi-check"></i>
+          notification
+        </div>
+
+        <button class="Wishlist-btn flex-fill">
+          <div onclick="toggleLike(this)">Wishlist &nbsp; <i class="bi bi-suit-heart-fill"></i></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- detatil Section -->
+<div class="container">
+  <div class="tab-container">
+    <button class="tab active" onclick="showTab('product-description')">
+      Product Description
+    </button>
+    <button class="tab" onclick="showTab('customer-reviews')">
+      Customer Reviews
+    </button>
+  </div>
+
+  <div id="product-description" class="tab-content active">
+    <div class="product-header">
+      <h1 class="product-title">Apple</h1>
+    </div>
+    <div class="product-details">
+      <p>Our Honeycrisp Apple is famous for its amazing crunch and juicy, sweet flavor. Every bite is a perfect mix of
+        sweet honey and a little bit of tang. We hand-pick them from our orchards at just the right time so you get the
+        best and freshest apple.
+
+      </p>
+<hr>
+      <h3>Key Features</h3>
+      <div class="features-list">
+        <ul>
+
+          <li><strong>Super Crunchy:</strong> It's known for its incredibly crisp texture.</li>
+
+          <li><strong> Sweet:</strong> A great balance of sweetness with a hint of tartness.
+          </li>
+          <li><strong>Fresh & High-Quality:</strong> Grown and picked with care for the best taste.
+          </li>
+
+        </ul>
+      </div>
+<hr>
+      <h3>Product Specifications</h3>
+      <p><strong>Origin:</strong>Grown in Mustang, Nepal<br>
+        <strong>Best Used For:</strong>Eating fresh, baking, and cooking<br>
+        <strong>Power:</strong> 1050 Watts<br>
+        <strong>How to Store:</strong>Keep it in the fridge to stay extra crisp.<br>
+        <strong>Material:</strong> Stainless steel and BPA-free plastic
+      </p>
+     
+    </div>
+  </div>
+
+       <div id="customer-reviews" class="tab-content">
+    <!-- <div class="container py-5"> -->
+    <div class="row">
+      <!-- Left: Reviews -->
+      <div class="col-md-6">
+        <h3>Customer Reviews</h3>
+        <div class="border p-3 mb-3 rounded">
+          <strong>Ramesh</strong> &nbsp;<i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <p>Great product, works perfectly. Worth the price!</p>
+        </div>
+        <div class="border p-3 mb-3 rounded">
+          <strong>Sita</strong> &nbsp;<i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+
+          <p>Excellent quality, fast delivery. Highly recommend.</p>
+        </div>
+        <div class="border p-3 mb-3 rounded">
+          <strong>Bikash</strong> &nbsp;<i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <i class="bi bi-star-fill text-warning"></i>
+          <p>It’s okay, but could be improved in build quality.</p>
+        </div>
+      </div>
+
+      <!-- Right: Review Form -->
+      <div class="col-md-6 mb-3">
+        <h3 class="mb-2">Write a Review</h3>
+        <form action="#" method="post">
+          {% csrf_token %}
+          <!-- Rating -->
+          <div class="rating mb-3">
+            <input value="5" name="rate" id="star5" type="radio">
+            <label for="star5"></label>
+            <input value="4" name="rate" id="star4" type="radio">
+            <label for="star4"></label>
+            <input value="3" name="rate" id="star3" type="radio" checked>
+            <label for="star3"></label>
+            <input value="2" name="rate" id="star2" type="radio">
+            <label for="star2"></label>
+            <input value="1" name="rate" id="star1" type="radio">
+            <label for="star1"></label>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Your Review:</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-danger">Submit Review</button>
+        </form>
+      </div>
+      <!-- </div> -->
+    </div>
+
+  </div>
+</div>
+
+<!-- Featured Products -->
+<section class="py-2">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0 fw-bold">Featured Products</h2>
+      <a href="{% url 'store:products' %}" class="product-btn btn-outline-primary btn-sm">View All Products</a>
+
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="row g-3">
+      <!-- Product 1 - Apple (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+        data-subcategory="fruits" data-tag="organic" data-brand="local" data-name="apple">
+        <a href="{% url 'store:product_detail' %}" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/apple.jpg' %}" class="img-fluid mb-2" alt="Apple"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-20%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Fresh Red Apple from Mustang</h6>
+              <p class="stock-status out-of-stock">
+                <i class="fas fa-times-circle"></i> Out of stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  250</span>
+                <span class="best-price fw-bold text-danger">Rs. 200</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 2 - Basmati Rice (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries" data-subcategory="dairy"
+        data-tag="organic" data-brand="local" data-name="basmati rice">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/basmati_rice.jpg' %}" class="img-fluid mb-2" alt="basmati rice"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-15%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Premium Basmati Rice</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  850</span>
+                <span class="best-price fw-bold text-danger">Rs. 720</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 3 - Cooking Oil (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries" data-subcategory=""
+        data-tag="" data-brand="fortune" data-name="sunflower oil">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/Sunflower_oil.jpg' %}" class="img-fluid mb-2" alt="sunflower oil"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-25%</div>
+              </div>
+              <h6 class="product-name">Fortune Sunflower Oil</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  320</span>
+                <span class="best-price fw-bold text-danger">Rs. 240</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 4 - Spices (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries" data-subcategory=""
+        data-tag="organic" data-brand="local" data-name="garam masala">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/garam_masala.jpg' %}" class="img-fluid mb-2" alt="Garam Masala"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-10%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Curry Master Garam Masala</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  150</span>
+                <span class="best-price fw-bold text-danger">Rs. 135</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 5 - Lentils (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries" data-subcategory="dairy"
+        data-tag="" data-brand="amrit" data-name="masoor dal">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/musuri_dal.jpg' %}" class="img-fluid mb-2" alt="Masoor Dal"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-12%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Amrit Masoor Dal</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  180</span>
+                <span class="best-price fw-bold text-danger">Rs. 158</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 6 - Snacks (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+        data-subcategory="snacks" data-tag="" data-brand="haldiram" data-name="mixture">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/Haldiram.jpg' %}" class="img-fluid mb-2" alt="Haldiram's Mixture"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-18%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Haldiram's Mixture</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  120</span>
+                <span class="best-price fw-bold text-danger">Rs. 98</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 7 - Regular Rice (Fixed data attributes) -->
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries" data-subcategory="dairy"
+        data-tag="organic" data-brand="local" data-name="white rice">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/white_rice.jpg' %}" class="img-fluid mb-2" alt="White Rice"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-8%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Akshar White Rice</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  680</span>
+                <span class="best-price fw-bold text-danger">Rs. 625</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const mainImage = document.getElementById('mainImage');
+    const allThumbnails = document.querySelectorAll('.product-image-thumb, .product-image-color-filter');
+
+    const sizeOptions = document.querySelectorAll('.size-option');
+    const selectedColorName = document.getElementById('selectedColorName');
+    const selectedSizeName = document.getElementById('selectedSizeName');
+
+    // --- Image Gallery & Color/Thumbnail Selection ---
+
+    /**
+     * Handles image change on click and updates selected state/color name.
+     * Works for both the main gallery thumbnails and the color options.
+     */
+    function handleImageSelection(thumb) {
+      // 1. Change Main Image: Use data-src (for color options) or src (for gallery thumbs)
+      const newSrc = thumb.getAttribute('data-src') || thumb.src;
+      mainImage.src = newSrc;
+
+      // 2. Highlight Thumbnail: Remove 'selected' from ALL thumbnails first
+      allThumbnails.forEach(t => t.classList.remove('selected'));
+      // Highlight the clicked thumbnail
+      thumb.classList.add('selected');
+
+      // 3. Update Color Name (if data-color attribute exists)
+      const color = thumb.getAttribute('data-color');
+      if (color && selectedColorName) {
+        selectedColorName.textContent = color;
+      }
+    }
+
+    // Attach event listener to ALL product image thumbnails
+    allThumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function () {
+        handleImageSelection(this);
+      });
+    });
+
+    // --- Image Zoom Logic ---
+    const container = document.querySelector('.position-relative-main');
+    const image = document.getElementById('mainImage');
+
+    if (container && image) {
+      container.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = container.getBoundingClientRect();
+        const x = ((e.pageX - left - window.scrollX) / width) * 100;
+        const y = ((e.pageY - top - window.scrollY) / height) * 100;
+        image.style.transformOrigin = `${x}% ${y}%`;
+        image.style.transform = "scale(1.5)"; // zoom level
+      });
+
+      container.addEventListener('mouseleave', () => {
+        image.style.transformOrigin = "center center";
+        image.style.transform = "scale(1)";
+      });
+    }
+
+    // --- Size Selection Logic ---
+    sizeOptions.forEach(button => {
+      button.addEventListener('click', function () {
+        // Remove 'active' class from all size buttons
+        sizeOptions.forEach(btn => btn.classList.remove('active', 'btn-danger'));
+        // Add 'active' class (assuming you have CSS for this)
+        this.classList.add('active', 'btn-danger');
+
+        // Update the displayed size
+        const size = this.getAttribute('data-size');
+        selectedSizeName.textContent = size;
+      });
+    });
+
+    // --- Notification Logic (Corrected and Simplified) ---
+    const showBtn = document.getElementById('addnotificationbtn');
+    const notification = document.getElementById('notification');
+    // Use a flag to track if the item is in the "cart" state
+    let isItemInCart = false;
+
+    if (showBtn && notification) {
+      showBtn.addEventListener('click', function () {
+        notification.style.display = 'block';
+
+        if (isItemInCart) {
+          // Already in cart: flash the "Already added" message
+          notification.innerText = "Product is already in the cart!";
+        } else {
+          // First click: add item to cart
+          isItemInCart = true;
+          notification.innerText = "Product added to cart successfully!";
+        }
+
+        // Set a timer to hide the notification
+        setTimeout(function () {
+          notification.style.display = 'none';
+        }, 3000);
+
+        // Reset the style for next potential success notification
+        setTimeout(function () {
+        }, 3000);
+      });
+    }
+
+    // --- Image Slider Logic (Integrate previous step's solution) ---
+    const sliderContainer = document.querySelector('.slider-container');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const sliderItems = document.querySelectorAll('.slider-item');
+
+    if (sliderContainer && prevBtn && nextBtn && sliderItems.length > 0) {
+      // Wait for images to load if necessary, but we'll use offsetWidth for quick calculation
+      const itemWidth = sliderItems[0].offsetWidth; // Width of one item
+      // Safely get the gap value from CSS
+      const style = window.getComputedStyle(sliderContainer);
+      const gap = parseFloat(style.getPropertyValue('gap')) || 0;
+
+      // Amount to scroll: width of one item + the gap
+      const scrollAmount = itemWidth + gap;
+
+      nextBtn.addEventListener('click', () => {
+        sliderContainer.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      });
+
+      prevBtn.addEventListener('click', () => {
+        sliderContainer.scrollBy({
+          left: -scrollAmount,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    // --- Bonus: Review Hover Effect (Kept as it was separate) ---
+    const ratingRows = document.querySelectorAll('.rating-row');
+    ratingRows.forEach(row => {
+      row.addEventListener('mouseenter', function () {
+        this.style.backgroundColor = '#f0f0f0';
+      });
+      row.addEventListener('mouseleave', function () {
+        this.style.backgroundColor = 'transparent';
+      });
+    });
+
+  }); // End of DOMContentLoaded
+
+  // --- Tab Functionality (Needs to be global or attached to window) ---
+  window.showTab = function (tabId) {
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+
+    // Remove active class from all tabs
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.classList.remove('active');
+    });
+
+    // Show selected tab content
+    document.getElementById(tabId).classList.add('active');
+
+    // Add active class to clicked tab
+    // Note: The event object (e.g., event.target) is automatically available 
+    // when called from an inline handler like onclick="showTab('...')".
+    // We can use it directly.
+    if (event.target) {
+      event.target.classList.add('active');
+    }
+  }
+  function toggleLike(button) {
+    // Prevent the link from being followed
+    event.preventDefault();
+    event.stopPropagation();
+
+    const isLiked = button.classList.contains('liked');
+    button.classList.toggle('liked');
+
+    // Get product details
+    const productItem = button.closest('.product-item');
+
+    // Show feedback message
+    if (!isLiked) {
+      showWishlistMessage(`<i class="bi bi-suit-heart-fill"></i> &nbsp; Added to Wishlist!`, 'success');
+      // Here you can add code to actually add to wishlist/database
+      // addToWishlist(productItem.getAttribute('data-name'));
+    } else {
+      showWishlistMessage(`<i class="bi bi-x-circle"></i> &nbsp; Removed from Wishlist!`, 'info');
+      // Here you can add code to remove from wishlist/database
+      // removeFromWishlist(productItem.getAttribute('data-name'));
+    }
+
+    // Animation effect
+    button.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      button.style.transform = 'scale(1)';
+    }, 150);
+  }
+
+  function showWishlistMessage(message, type) {
+    // Create toast notification
+    const toast = document.createElement('div');
+
+    // Use the base Bootstrap alert classes + the custom CSS class 'wishlist-toast'
+    toast.className = `alert alert-${type} position-fixed wishlist-toast`;
+
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            ${message}
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Show toast by adding the 'show' class, which triggers the CSS transition
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+
+    // Hide and remove toast after 3 seconds
+    setTimeout(() => {
+      // Hide toast by removing the 'show' class
+      toast.classList.remove('show');
+
+      // Wait for the 0.3s CSS transition to complete, then remove from DOM
+      const transitionDuration = 300;
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
+      }, transitionDuration);
+    }, 3000);
+  }</script>
+{% endblock %}

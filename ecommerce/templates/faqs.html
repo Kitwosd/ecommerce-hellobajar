@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.veg - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/faqs.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<style>
+  
+</style>
+
+<div class="container">
+    <div class="accordion-container center">
+        <div class="accordion-item">
+            <div class="accordion-header active">
+                Question
+                <span class="arrow">&#9660;</span>
+            </div>
+            <div class="accordion-content">
+                <p>Answer</p>
+            </div>
+        </div><hr>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                Question 2
+                <span class="arrow">&#9660;</span>
+            </div>
+            <div class="accordion-content">
+                <p>This is the answer to the second question.</p>
+            </div>
+        </div><hr>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                Question 3
+                <span class="arrow">&#9660;</span>
+            </div>
+            <div class="accordion-content">
+                <p>This is the answer to the third question.</p>
+            </div>
+        </div>
+    </div 
+</div>
+    {% endblock %}
+
+    {% block extra_js %}
+   <script src="{% static 'js/faqs.js' %}"></script>
+
+    {% endblock %}

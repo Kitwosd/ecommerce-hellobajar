@@ -1,0 +1,472 @@
+
+/* Slider Container */
+.container {
+  background-color: #f8f9fa;
+  padding: 2rem;
+   max-width: 900px;
+    margin: 0 auto;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+    gap: 30px;
+    padding: 2rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  height: 19.873rem;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.slider {
+  display: flex;
+  width: 100%;
+  height: 19.873rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.slider a {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 19.873rem;
+  scroll-snap-align: start;
+}
+
+.slider img {
+  width: 100%;
+  height: 19.873rem;
+  object-fit: fill;
+  border-radius: 10px;
+}
+
+/* ✅ On small screens, show full image */
+@media (max-width: 768px) {
+  .slider img {
+    object-fit: fill; /* show full image */
+    background-color: #000; /* optional: black bars if aspect ratio doesn't match */
+  }
+}
+
+/* Arrows */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+}
+
+.slider-arrow-left {
+  left: 10px;
+}
+
+.slider-arrow-right {
+  right: 10px;
+}
+
+/* Nav dots */
+.slider-nav {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-nav a {
+  width: 12px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  display: block;
+  opacity: 0.5;
+}
+
+.slider-nav a:target {
+  opacity: 1;
+}
+
+/* Hide horizontal scrollbar for the slider but keep it scrollable */
+.slider::-webkit-scrollbar {
+  display: none;
+}
+.slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* .slide { flex: 0 0 100%; height: 100%; }
+.slide img { width: 100%; height: 100%; object-fit: cover; display: block; } */
+
+/* Arrows */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+}
+
+.slider-arrow-left {
+  left: 10px;
+}
+
+.slider-arrow-right {
+  right: 10px;
+}
+*/
+
+/* Nav dots */
+.slider-nav {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-nav a {
+  width: 12px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  display: block;
+  opacity: 0.5;
+}
+
+.slider-nav a.active {
+  opacity: 1;
+}
+
+/* Hide horizontal scrollbar for the slider but keep it scrollable */
+.slider::-webkit-scrollbar {
+  display: none;
+}
+.slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Prevent page-level horizontal scrollbar */
+body {
+  overflow-x: hidden;
+}
+.slider-nav {
+  display: flex;
+  column-gap: 1rem;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-80%);
+  z-index: 1;
+}
+.slider-nav a {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 0.75;
+  transition: opacity ease 250ms;
+}
+.slider-nav a:hover {
+  opacity: 1;
+}
+
+/* Slider arrow controls */
+.slider-wrapper {
+  position: relative;
+}
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.slider-arrow:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+.slider-arrow-left {
+  left: 10px;
+}
+.slider-arrow-right {
+  right: 10px;
+}
+
+.btn-show-more {
+  background: #3e3f29;
+  color: #3e3f29;
+}
+.heading{
+     font-weight: 700;
+     color: #3e3f29;
+}
+.category-item {
+  flex: 0 0 auto; /* prevent shrinking */
+  padding: 10px 10px; /* padding inside item */
+  background: #fbf9f9;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  min-width: 150px; /* ensure single row scroll */
+  display: flex;
+  flex-direction: column; /* stack image and text vertically */
+  align-items: center;
+}
+
+.category-item img {
+  width: 100px; /* fixed width */
+  height: 100px; /* fixed height */
+  object-fit: contain; /* maintain aspect ratio */
+  margin-bottom: 2px; /* space between image and text */
+}
+
+.fw-bold {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  text-align: bottom;
+  text-align: center;
+  margin-top: 1px;
+  margin-bottom: 10px;
+
+}
+/* Optional: hide default scrollbar */
+.category-container {
+  display: flex;                 /* horizontal flex layout */
+  flex-wrap: nowrap;             /* single row only */
+  overflow-x: auto;              /* horizontal scrolling */
+  overflow-y: hidden;            /* hide vertical overflow */
+  gap: 15px;                     /* space between items */
+  padding: 10px 16px;            /* inner spacing */
+  height: 190px;                 /* adjust as needed */
+  scroll-behavior: smooth;       /* smooth scrolling */
+  scroll-snap-type: x mandatory; /* snap to each item */
+  -webkit-overflow-scrolling: touch; /* smooth on iOS */
+
+  /* Hide scrollbars */
+  -ms-overflow-style: none;      /* IE and Edge */
+  scrollbar-width: none;         /* Firefox */
+}
+.item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+} /* keep children from shrinking so overflow happens */
+
+.product-card {
+  height: 100%; /* ensure all cards stretch equally */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px; /* height of one line */
+  display: -webkit-box; /* for WebKit multiline ellipsis */
+  -webkit-line-clamp: 1; /* limit to 1 line */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Fallback for non-WebKit browsers */
+  white-space: nowrap; /* prevents text wrapping to new line */
+  word-break: break-word; /* breaks long words if needed */
+
+  margin: 0 0 4px 0;
+  padding: 0;
+}
+
+.price {
+  text-align: left;
+  color: #999;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: oblique;
+  font-family: "Franklin Gothic Medium";
+}
+.best-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.btn-buy {
+  position: absolute;
+  left: 185px;
+  bottom: 17px;
+}
+.form-control:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.3rem rgba(13, 110, 253, 0.25); /* this is the "blue shadow" */
+}
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05); /* scale both X & Y */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* optional */
+}
+.container-fluid {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.category-container::-webkit-scrollbar {
+  height: 6px;
+}
+.category-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* Hover scale effect for each category item */
+.category-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.category-item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.stock-status {
+  font-size: 0.85rem; /* smaller text */
+  margin-bottom: 0; /* remove bottom margin */
+}
+
+.stock-status i {
+  font-size: 0.9em; /* slightly smaller icon */
+}
+
+.stock-status.in-stock {
+  color: #28a745;
+}
+
+.stock-status.out-of-stock {
+  color: #dc3545;
+}
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+#show-more-btn {
+  background-color: #3e3f29;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid #3e3f29;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Correct hover target */
+#show-more-btn:hover {
+  background-color: orangered;
+  border-color: orangered;
+  color: #fff;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+.product-btn {
+  background-color: #3e3f29;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid #3e3f29;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Correct hover target */
+.product-btn:hover {
+  background-color: orangered;
+  border-color: orangered;
+  color: #fff;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.footer {
+  background-color: #3e3f29;
+}
+
+@media (min-width: 992px) {
+    .col-lg-2-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+.like-btn {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  z-index: 10; /* Ensures it's above other elements */
+}
+.like-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255,255,255,1) !important;
+    
+}
+
+.like-btn.liked i {
+    color: #e91e63 !important;
+}

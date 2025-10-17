@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.veg - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/.css' %}" rel="stylesheet">
+<style> 
+.container{
+   min-height: 80vh;
+}  
+.product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #dee2e6;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .quantity-btn:hover {
+      background: #f8f9fa;
+    }
+
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    .remove-btn {
+      color: #dc3545;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .remove-btn:hover {
+      color: #a71e2a;
+    }
+
+    .order-summary {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .btn-checkout {
+      background: #d4a353;
+      border-color: #d4a353;
+      color: white;
+      font-weight: 600;
+    }
+
+    .btn-checkout:hover {
+      background: #c49441;
+      border-color: #c49441;
+      color: white;
+    }
+
+    .btn-shipping {
+      background: #d4a353;
+      border-color: #d4a353;
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .btn-shipping:hover {
+      background: #c49441;
+      border-color: #c49441;
+      color: white;
+    }</style>
+{% endblock %}
+
+{% block content %}
+     <div class="container mt-4">
+    <div class="row g-4">
+      <!-- Cart Items Section -->
+      <div class="col-12 col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <!-- Header Row -->
+            <div class="row fw-bold text-muted mb-3 pb-2 border-bottom d-none d-md-flex">
+              <div class="col-5">Products</div>
+              <div class="col-2 text-center">Price</div>
+              <div class="col-3 text-center">Quantity</div>
+              <div class="col-2 text-end">Subtotal</div>
+            </div>
+ 
+            <!-- Product 1 -->
+            <div class="row align-items-center py-3 border-bottom">
+              <div class="col-12 col-md-5 mb-2 mb-md-0">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-sm remove-btn me-2" onclick="removeItem(1)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <img src="{% static 'images/basmati_rice.jpg' %}" class="product-image me-2" alt="Basmati Rice">
+                  <div>
+                    <h6 class="mb-1">Premium Basmati Rice</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-2 text-center fw-bold">Rs 720</div>
+              <div class="col-6 col-md-3">
+                <div class="quantity-controls">
+                  <button class="quantity-btn" onclick="decreaseQuantity(1)">-</button>
+                  <input type="number" class="quantity-input" id="qty1" value="1" min="1">
+                  <button class="quantity-btn" onclick="increaseQuantity(1)">+</button>
+                </div>
+              </div>
+              <div class="col-12 col-md-2 text-end fw-bold mt-2 mt-md-0" id="subtotal1">Rs 720</div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="row align-items-center py-3 border-bottom">
+              <div class="col-12 col-md-5 mb-2 mb-md-0">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-sm remove-btn me-2" onclick="removeItem(2)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <img src="{% static 'images/apple.jpg' %}" class="product-image me-2" alt="Apple">
+                  <div>
+                    <h6 class="mb-1">Apple</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-2 text-center fw-bold">Rs 200</div>
+              <div class="col-6 col-md-3">
+                <div class="quantity-controls">
+                  <button class="quantity-btn" onclick="decreaseQuantity(2)">-</button>
+                  <input type="number" class="quantity-input" id="qty2" value="3" min="1">
+                  <button class="quantity-btn" onclick="increaseQuantity(2)">+</button>
+                </div>
+              </div>
+              <div class="col-12 col-md-2 text-end fw-bold mt-2 mt-md-0" id="subtotal2">Rs 200</div>
+            </div>
+
+            <!-- Cart Total -->
+            <div class="row mt-3">
+              <div class="col-6 col-md-8"></div>
+              <div class="col-3 col-md-2 fw-bold">Total:</div>
+              <div class="col-3 col-md-2 text-end fw-bold fs-5" id="cartTotal">Rs 920</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="col-12 col-lg-4">
+        <div class="order-summary">
+          <button class="btn btn-shipping w-100">
+            Add Shipping Address
+          </button>
+
+          <h5 class="mb-3">Order Summary</h5>
+
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Subtotal</span>
+            <span class="fw-bold" id="orderSubtotal">Rs 920</span>
+          </div>
+
+          <hr>
+          <button class="btn btn-checkout w-100 d-flex align-items-center justify-content-center">
+            Customer Checkout
+            <i class="fas fa-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

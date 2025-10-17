@@ -1,0 +1,637 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello_bajar-style Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary-bg: #131921;
+            --secondary-bg: #232f3e;
+            --accent-color: #ff9900;
+            --search-bg: #3e3f29;
+            --search-input-bg: #040303;
+            --text-primary: #ffffff;
+            --text-secondary: #555;
+            --text-link: #007185;
+            --text-link-hover: #c7511f;
+            --border-color: #ddd;
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== GLOBAL STYLES ===== */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        /* ===== HEADER & NAVBAR ===== */
+        .hello_bajar-header {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hello_bajar-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ===== NAV ITEMS BASE STYLES ===== */
+        .hello_bajar-navbar a,
+        .hello_bajar-navbar button,
+        .hello_bajar-navbar .dropdown-toggle {
+            color: var(--text-primary);
+            text-decoration: none;
+            background-color: transparent;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.2s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .hello_bajar-navbar a:hover,
+        .hello_bajar-navbar button:hover,
+        .hello_bajar-navbar .dropdown-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        /* ===== LEFT NAVIGATION ===== */
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Logo */
+        .nav-logo img {
+            width: 120px;
+            height: 50px;
+        }
+
+        /* Location */
+        .nav-location {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .nav-location .bi-geo-alt-fill {
+            font-size: 20px;
+        }
+
+        .nav-location-text {
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+
+        .nav-location-text .nav-value {
+            font-weight: bold;
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .nav-search {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background-color: var(--search-bg);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .nav-search-dropdown select {
+            background-color: var(--search-input-bg);
+            border: none;
+            padding: 8px 10px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            cursor: pointer;
+            border-right: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+
+        .nav-search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 8px 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .nav-search-button {
+            background-color: var(--search-input-bg);
+            padding: 8px 15px;
+            border-radius: 0 5px 5px 0;
+            color: var(--search-bg);
+            font-size: 18px;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-search-button:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== RIGHT NAVIGATION ===== */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            padding: 5px 10px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.2s ease;
+        }
+
+        .nav-item:hover {
+            border-color: var(--accent-color);
+        }
+
+        .nav-item .nav-item-label {
+            font-size: 12px;
+        }
+
+        .nav-item .nav-item-value {
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        /* ===== CART ICON ===== */
+        .nav-cart {
+            display: flex;
+            align-items: flex-end;
+            position: relative;
+            padding: 5px 10px;
+        }
+
+        .nav-cart .bi-cart {
+            font-size: 28px;
+        }
+
+        .nav-cart-count {
+            position: absolute;
+            top: 5px;
+            left: 20px;
+            background-color: var(--accent-color);
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-cart-label {
+            margin-left: 5px;
+            white-space: nowrap;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* ===== DROPDOWNS ===== */
+        .language-dropdown,
+        .categories-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        
+        .flag-icon {
+            height: 15px;
+            margin-right: 5px;
+        }
+
+        /* Dropdown Menu Base */
+        .language-dropdown .dropdown-menu,
+        .categories-dropdown .dropdown-menu {
+             position: absolute;
+          
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+    
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            margin-top: 8px;
+            display: block !important;
+        }
+
+        .language-dropdown:hover .dropdown-menu,
+        .categories-dropdown:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            display: block !important;
+        }
+
+        /* Dropdown Items */
+        .language-dropdown .dropdown-menu .dropdown-item,
+        .categories-dropdown .dropdown-menu .dropdown-item {
+            color: var(--primary-bg) !important;
+            background-color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+        }
+        .language-dropdown .dropdown-menu .dropdown-item:hover,
+        .categories-dropdown .dropdown-menu .dropdown-item:hover {
+            background-color: #dddddd !important;
+            color: var(--primary-bg) !important;
+        }
+
+        /* Dropdown Triangle Pointer */
+        .language-dropdown .dropdown-menu::before,
+        .categories-dropdown .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(45deg);
+            z-index: 1002;
+        }
+
+        /* ===== ACCOUNT & LISTS DROPDOWN ===== */
+        .nav-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-container .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 10px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            min-width: 280px;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            margin-top: 8px;
+            display: block !important;
+        }
+
+        .nav-container:hover .dropdown-menu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+
+        .nav-container .dropdown-content {
+            display: flex !important;
+            padding: 20px;
+            gap: 40px;
+            flex-wrap: nowrap;
+        }
+
+        .nav-container .dropdown-section {
+            flex: 1;
+            min-width: 0;
+            display: block !important;
+        }
+
+        .nav-container .dropdown-section h3 {
+            font-size: 16px !important;
+            color: var(--primary-bg) !important;
+            margin-bottom: 12px !important;
+            font-weight: bold !important;
+            display: block !important;
+        }
+
+        .nav-container .dropdown-section ul {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+
+        .nav-container .dropdown-section li {
+            margin-bottom: 8px !important;
+            display: block !important;
+        }
+
+        .nav-container .dropdown-section a {
+            color: black !important;
+            text-decoration: none !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+            display: block !important;
+            padding: 2px 0 !important;
+            transition: color 0.2s ease !important;
+            border: none !important;
+            background: none !important;
+        }
+
+        
+
+        .nav-container .profile-section {
+            background-color: #f7f8f8 !important;
+            padding: 12px 20px !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            font-size: 13px !important;
+            color: var(--text-secondary) !important;
+            display: block !important;
+        }
+
+        .nav-container .profile-link {
+            color: var(--text-link) !important;
+            text-decoration: none !important;
+            float: right !important;
+        }
+
+        .nav-container .profile-link:hover {
+            color: var(--text-link-hover) !important;
+            text-decoration: underline !important;
+        }
+
+        /* Triangle Pointer */
+        .nav-container .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(45deg);
+            z-index: 1002;
+        }
+
+        /* ===== HAMBURGER MENU ===== */
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        
+        /* Tablets & Smaller Laptops (1024px and below) */
+        @media (max-width: 1024px) {
+            .nav-search {
+                flex-grow: 0;
+                width: 400px;
+            }
+
+            .nav-item .nav-item-value {
+                font-size: 12px;
+            }
+
+            .nav-container .dropdown-menu {
+                min-width: 380px;
+            }
+        }
+
+        /* Tablets (768px and below) */
+        @media (max-width: 768px) {
+            .hello_bajar-navbar {
+                display: grid;
+                grid-template-areas:
+                    "logo menu cart"
+                    "search search search";
+                grid-template-columns: 1fr auto auto;
+                gap: 10px;
+                align-items: center;
+                padding-bottom: 5px;
+            }
+
+            .nav-logo {
+                grid-area: logo;
+            }
+
+            .nav-search {
+                grid-area: search;
+                width: 100%;
+            }
+
+            .nav-cart {
+                grid-area: cart;
+                display: flex;
+            }
+
+            .menu-toggle {
+                grid-area: menu;
+                display: block;
+                font-size: 40px;
+            }
+
+            .nav-right {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--secondary-bg);
+                padding: 10px;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                z-index: 999;
+            }
+
+            .nav-right.active {
+                display: flex;
+            }
+
+            .nav-search-dropdown {
+                display: none;
+            }
+
+            .nav-right .nav-item,
+            .nav-right .dropdown,
+            .nav-right .nav-container    {
+                width: 100%;
+                text-align: left;
+                padding: 10px;
+                border: none;
+            }
+
+            .nav-right .nav-item:hover,
+            .nav-right .dropdown:hover {
+                background-color: var(--hover-bg);
+                border: none;
+            }
+
+            .nav-container .dropdown-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hello_bajar-header">
+        <nav class="hello_bajar-navbar">
+            <!-- LEFT SECTION: Logo & Location -->
+            <div class="nav-left">
+                <a href="{% url 'store:home' %}" class="nav-logo">
+                    <img src="{% static 'images/hello_bajar.png' %}" alt="hello_bajar Logo">
+                </a>
+                <a href="{% url 'store:user_address' %}" class="nav-location">
+                    <i class="bi bi-geo-alt-fill pb-1"></i>
+                    <div class="nav-location-text">
+                        <span class="nav-label">Deliver to</span>
+                        <span class="nav-value">Nepal</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- CENTER SECTION: Search Bar -->
+            <div class="nav-search">
+                <input type="text" class="nav-search-input" placeholder="Search hello_bajar">
+                <button class="nav-search-button" aria-label="Search">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+
+            <!-- RIGHT SECTION: Navigation Items -->
+            <div class="nav-right">
+                <!-- Language Dropdown -->
+                <div class="dropdown language-dropdown">
+                    <button class="dropdown-toggle" type="button" aria-expanded="false">
+                        <span class="fi fi-us me-2"></span> EN
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <span class="fi fi-us me-2"></span> English
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <span class="fi fi-np me-2"></span> Nepali
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Categories Dropdown -->
+                <div class="dropdown categories-dropdown">
+                    <button class="dropdown-toggle font-weight-bold" type="button" aria-expanded="false">
+                        Categories
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'store:fruits' %}">Fruits</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:veg' %}">Vegetables</a></li>
+                        <li><a class="dropdown-item" href="/books">Books</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:product_detail1' %}">Clothing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Account & Lists Dropdown -->
+                <div class="nav-container">
+                    <a href="{% url 'store:user_home' %}" class="nav-item">
+                        <span class="nav-item-label">Hello, {{ user.username }}!</span>
+                        <span class="nav-item-value">Account & Lists</span>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <div class="profile-section">
+                            Profile
+                            <a href="{% url 'store:user_detail' %}" class="profile-link">Manage Profiles ›</a>
+                        </div>
+
+                        <div class="dropdown-content">
+                            <div class="dropdown-section">
+                                <h3>Your Account</h3>
+                                <ul>
+                                    <li><a class="dropdown-item" href="{% url 'store:logout' %}">Sign Out</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'store:user_home' %}">Account</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'store:user_order' %}">Orders</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'store:wish_list' %}">Wish List</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'store:contacts' %}">Content</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Returns & Orders -->
+                 <div class="nav-container">
+                <a href="{% url 'store:user_order' %}" class="nav-item">
+                    <span class="nav-item-label">Returns</span>
+                    <span class="nav-item-value">& Orders</span>
+                </a>
+                </div>
+            </div>
+
+            <!-- CART ICON -->
+            <a href="{% url 'store:cart' %}" class="nav-cart">
+                <span class="nav-cart-count">0</span>
+                <i class="bi bi-cart"></i>
+                <span class="nav-cart-label">Cart</span>
+            </a>
+
+            <!-- HAMBURGER MENU (Mobile) -->
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <i class="bi bi-list"></i>
+            </button>
+        </nav>
+    </header>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navRight = document.querySelector('.nav-right');
+
+            // Toggle mobile menu
+            if (menuToggle && navRight) {
+                menuToggle.addEventListener('click', () => {
+                    navRight.classList.toggle('active');
+                });
+            }
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navRight && navRight.classList.contains('active')) {
+                    if (!navRight.contains(e.target) && !menuToggle.contains(e.target)) {
+                        navRight.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

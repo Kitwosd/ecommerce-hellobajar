@@ -1,0 +1,88 @@
+
+    .dashboard-menu {
+        min-height: 100vh;
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .dashboard-menu .list-group-item {
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+    }
+    .dashboard-menu .list-group-item.active {
+      background-color: #7b5a29 !important;
+      border-color: #7b5a29 !important;
+      color: #fff !important;
+    }
+   .dashboard-content {
+        padding-top: 30px;
+    margin-left: 250 !important;
+
+    }
+    .dashboard-content h2 {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 2px;
+    }
+    /* .dashboard-menu .active {
+      background-color: #7b5a29 !important;
+      border-color: #7b5a29 !important;
+      color: #fff !important;
+    } */
+   .dashboard-content {
+        padding-top: 30px;
+    margin-left: 250 !important;
+
+    }
+    .dashboard-content h2 {
+      font-weight: bold;
+      
+      color: #333;
+      margin-bottom: 2px;
+    }
+
+  .other-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .other-box h5 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .other-box p {
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Common styling for both buttons */
+  .save {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white; /* Added missing color property */
+  }
+  
+  /* Hover effect for both */
+  .save:hover {
+    opacity: 0.8;
+  }
+  
+  /* Specific styling */
+  .save {
+    background-color: #28a745; /* Green */
+  }

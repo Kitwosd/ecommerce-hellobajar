@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/.css' %}" rel="stylesheet">
+<style> body {
+      background-color: #f8f9fa;
+    }
+    .dashboard-menu {
+      min-height: 100vh;
+     
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .dashboard-menu .list-group-item {
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+    }
+    .dashboard-menu .list-group-item.active {
+      background-color: #7b5a29 !important;
+      border-color: #7b5a29 !important;
+      color: #fff !important;
+    }
+    .dashboard-content {
+    margin-left: 250 !important;
+
+    }
+    .dashboard-content h2{
+      padding-top: 30px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .address-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: #ffffff;
+    }
+    .address-box a {
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .other-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(166, 137, 137, 0.1);
+        }
+        .other-box h5 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .other-box p {
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+/* Common styling for both buttons */
+ .save-btn,
+  .cancel-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* Hover effect for both */
+  .save-btn:hover,
+  .cancel-btn:hover {
+    opacity: 0.8;
+  }
+
+  /* Specific styling */
+  .save-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+  }
+
+  .cancel-btn {
+    background-color: #dc3545; /* Red */
+    margin-left: 10px; /* Space between buttons */
+    color: white;
+  }</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 dashboard-menu">
+      <div class="list-group">
+        <a href="{% url 'store:user_home' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-chart-line"></i> Dashboard
+        </a>
+        <a href="{% url 'store:user_order' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-bag-shopping"></i> Order
+        </a>
+        <a href="{% url 'store:wish_list' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-heart"></i> Wishlist
+        </a>
+        <a href="{% url 'store:loyalty' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-coins"></i> Loyalty Points
+        </a>
+        <a href="{% url 'store:user_address' %}" class="list-group-item list-group-item-action active">
+          <i class="fa fa-location-dot"></i> My Address
+        </a>
+        <a href="{% url 'store:user_detail' %}" class="list-group-item list-group-item-action ">
+          <i class="fa fa-user"></i> Account Details
+        </a>
+        <a href="" class="list-group-item list-group-item-action">
+          <i class="fa fa-right-from-bracket"></i> Log Out
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-9 col-lg-8 px-4 mx-5 dashboard-content ">
+      <h2>My Address</h2>
+      <form>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="address-box">
+              <h5>Billing Address</h5>
+              <form>
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="Full Name *" required>
+                </div>
+
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="Street Address *" required>
+                </div>
+
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="City *" required>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="State / Province *" required>
+                  </div>
+
+                </div>
+
+                <div class="mb-3">
+                  <input type="text" class="form-control" placeholder="Country *" required>
+                </div>
+
+                <button type="submit" class="save-btn">Save Address</button>
+                <button type="submit" class="cancel-btn">Cancel</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="other-box">
+              <h5>Shipping Address</h5>
+              <p>Riken Maharjan</p>
+              <p>Lalitpur</p>
+              <p>Pulchow</p>
+              <p>2</p>
+              <p>Nepal</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    </form>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/.js' %}"></script>
+{% endblock %}

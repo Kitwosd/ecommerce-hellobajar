@@ -1,0 +1,483 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.veg - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/.css' %}" rel="stylesheet">
+<style>
+    /* Slider Container */
+    .container {
+        background-color: #f8f9fa;
+        padding: 4rem;
+    }
+
+    .heading {
+        font-weight: 700;
+        color: #3e3f29;
+    }
+
+    .product-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .product-name {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        /* Fallback for non-WebKit browsers */
+        white-space: nowrap;
+        word-break: break-word;
+
+        margin: 0 0 4px 0;
+        padding: 0;
+    }
+
+    .price {
+        text-align: left;
+        color: #999;
+        font-size: 16px;
+        font-weight: 500;
+        font-style: oblique;
+        font-family: "Franklin Gothic Medium";
+    }
+
+    .best-price {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .btn-buy {
+        position: absolute;
+        left: 185px;
+        bottom: 17px;
+    }
+
+    .form-control:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.3rem rgba(13, 110, 253, 0.25);
+        /* this is the "blue shadow" */
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        /* scale both X & Y */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        /* optional */
+    }
+
+    .container-fluid {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    }
+
+    .category-container::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .category-container::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 3px;
+    }
+
+    /* Hover scale effect for each category item */
+
+    .stock-status {
+        font-size: 0.85rem;
+        /* smaller text */
+        margin-bottom: 0;
+        /* remove bottom margin */
+    }
+
+    .stock-status i {
+        font-size: 0.9em;
+        /* slightly smaller icon */
+    }
+
+    .stock-status.in-stock {
+        color: #28a745;
+    }
+
+    .stock-status.out-of-stock {
+        color: #dc3545;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #dc3545;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
+    /* Show More button */
+    #show-more-btn {
+        background-color: #3E3F29;
+        border-color: #d4a353;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
+    #show-more-btn:hover {
+        background-color: #c49441;
+        border-color: #c49441;
+        color: #fff;
+    }
+
+    .footer {
+        background-color: #3E3F29;
+    }
+
+    .product-btn {
+        background-color: #3e3f29;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 2px solid #3e3f29;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Correct hover target */
+    .product-btn:hover {
+        background-color: orangered;
+        border-color: orangered;
+        color: #fff;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+    .like-btn {
+  position: absolute;
+  bottom: 10px; 
+  right: 10px; 
+  background: whitesmoke;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  z-index: 10; 
+}
+.like-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255,255,255,1) !important;
+    
+}
+
+.like-btn.liked i {
+    color: #e91e63 !important;
+}
+ .wishlist-toast {
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    z-index: 1000;
+    min-width: 300px;
+    background-color: green !important;
+    color: white !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  /* State for the toast when it is SHOWN */
+  .wishlist-toast.show {
+    opacity: 1;
+  }
+.col-lg-3,
+.col-xl-2-4 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 992px) {
+  .col-lg-2-4 {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-2-4 {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash Sale Products -->
+<section class="py-2">
+    <div class="container rounded" style="max-width: 1500px;">
+
+        <div class="container-fluid px-2">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="heading mb-0">Flash Sale Products</h2>
+                <a href="{% url 'store:products' %}" class="product-btn btn-outline-primary btn-sm">View All
+                    Products</a>
+            </div>
+
+            <div class="row g-3">
+
+                <!-- Product 1  -->
+      <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2-4 mb-4 product-item" data-category="groceries"
+        data-subcategory="fruits" data-tag="organic" data-brand="local" data-name="apple">
+        <a href="{% url 'store:product_detail' %}" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/apple.jpg' %}" class="img-fluid mb-2" alt="Apple"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-20%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Fresh Red Apple from Mustang</h6>
+              <p class="stock-status out-of-stock">
+                <i class="fas fa-times-circle"></i> Out of stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  250</span>
+                <span class="best-price fw-bold text-danger">Rs. 200</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 2  -->
+      <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2-4 mb-4 product-item" data-category="groceries" data-subcategory="dairy"
+        data-tag="organic" data-brand="local" data-name="basmati rice">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/basmati_rice.jpg' %}" class="img-fluid mb-2" alt="basmati rice"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-15%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Premium Basmati Rice</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  850</span>
+                <span class="best-price fw-bold text-danger">Rs. 720</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 3  -->
+      <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2-4 mb-4 product-item" data-category="groceries" data-subcategory=""
+        data-tag="" data-brand="fortune" data-name="sunflower oil">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/Sunflower_oil.jpg' %}" class="img-fluid mb-2" alt="sunflower oil"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-25%</div>
+                 <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Fortune Sunflower Oil</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  320</span>
+                <span class="best-price fw-bold text-danger">Rs. 240</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 4  -->
+      <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2-4 mb-4 product-item" data-category="groceries" data-subcategory=""
+        data-tag="organic" data-brand="local" data-name="garam masala">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/garam_masala.jpg' %}" class="img-fluid mb-2" alt="Garam Masala"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-10%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Curry Master Garam Masala</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  150</span>
+                <span class="best-price fw-bold text-danger">Rs. 135</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Product 5  -->
+      <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2-4 mb-4 product-item" data-category="groceries" data-subcategory="dairy"
+        data-tag="" data-brand="amrit" data-name="masoor dal">
+        <a href="" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm rounded product-card">
+            <div class="card-body">
+              <div class="text-center position-relative">
+                <img src="{% static 'images/musuri_dal.jpg' %}" class="img-fluid mb-2" alt="Masoor Dal"
+                  style="max-height:160px; object-fit:contain;">
+                <div class="discount-badge">-12%</div>
+                <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                  <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                </button>
+              </div>
+              <h6 class="product-name">Amrit Masoor Dal</h6>
+              <p class="stock-status in-stock">
+                <i class="fas fa-check-circle"></i> In stock
+              </p>
+              <div class="price">
+                <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                  180</span>
+                <span class="best-price fw-bold text-danger">Rs. 158</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <button id="show-more-btn" class="btn-show-more">Show More</button>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>function toggleLike(button) {
+    // Prevent the link from being followed
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const isLiked = button.classList.contains('liked');
+    button.classList.toggle('liked');
+    
+    // Get product details
+    const productItem = button.closest('.product-item');
+    
+    // Show feedback message
+    if (!isLiked) {
+        showWishlistMessage(`<i class="bi bi-suit-heart-fill"></i> &nbsp; Added to Wishlist!`, 'success');
+       
+    } else {
+        showWishlistMessage(`<i class="bi bi-x-circle"></i> &nbsp; Removed from Wishlist!`, 'info');
+       
+    }
+    
+    // Animation effect
+    button.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        button.style.transform = 'scale(1)';
+    }, 150);
+}
+
+ function showWishlistMessage(message, type) {
+    // Create toast notification
+    const toast = document.createElement('div');
+
+    // Use the base Bootstrap alert classes + the custom CSS class 'wishlist-toast'
+    toast.className = `alert alert-${type} position-fixed wishlist-toast`;
+
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            ${message}
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Show toast by adding the 'show' class, which triggers the CSS transition
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+
+    // Hide and remove toast after 3 seconds
+    setTimeout(() => {
+      // Hide toast by removing the 'show' class
+      toast.classList.remove('show');
+
+      // Wait for the 0.3s CSS transition to complete, then remove from DOM
+      const transitionDuration = 300;
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
+      }, transitionDuration);
+    }, 3000);
+  }</script>
+{% endblock %}

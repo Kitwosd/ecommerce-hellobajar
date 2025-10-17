@@ -1,0 +1,76 @@
+  .container{
+        min-height: 50vh;
+         position: relative;
+    }
+    .accordion-container {
+        width: 1000px;
+       max-width: 1000px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    }
+
+    .accordion-item {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .accordion-item:last-child {
+        border-bottom: none;
+    }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        cursor: pointer;
+        background-color: #fff;
+        color: #333;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .accordion-header:hover {
+        background-color: #f0f0f0;
+    }
+
+    .accordion-header.active {
+        background-color: #e0e0e0;
+    }
+
+    .accordion-header .arrow {
+        font-size: 1.2em;
+        transition: transform 0.3s ease;
+    }
+
+    .accordion-header.active .arrow {
+        transform: rotate(180deg);
+    }
+
+    .accordion-content {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        background-color: #f9f9f9;
+    }
+
+    .accordion-content p {
+        padding: 15px 0;
+        margin: 0;
+    }
+
+    .accordion-header.active+.accordion-content {
+        max-height: 200px;
+        /* Adjust as needed */
+        padding: 15px 20px;
+    }
+    hr {
+  border: none; /* Removes the default 3D border effect */
+  border-top: 1px solid #ffffff; /* Sets a light gray border color */
+}

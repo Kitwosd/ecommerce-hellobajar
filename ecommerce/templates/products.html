@@ -1,0 +1,1187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/.css' %}" rel="stylesheet">
+<style>/* Base Styles */
+
+
+/* Filter Sidebar */
+.filter-sidebar {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+/* Mobile-first: Hide sidebar on mobile by default */
+@media (max-width: 767.98px) {
+    .filter-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        width: 280px;
+        z-index: 1050;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        margin-bottom: 0;
+    }
+    
+    .filter-sidebar.show {
+        left: 0;
+    }
+    
+    .filter-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+    }
+    
+    .filter-overlay.show {
+        display: block;
+    }
+    
+    .mobile-filter-toggle {
+        display: block;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .mobile-filter-toggle {
+        display: none;
+    }
+}
+
+/* Filter Section Styles */
+.filter-section {
+    margin-bottom: 25px;
+}
+
+.filter-section h6 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #333;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.filter-section h6 .fas {
+    color: #4CAF50;
+    margin-right: 10px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.filter-option input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-right: 12px;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.filter-option input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.filter-option input[type="checkbox"]:checked::before {
+    content: '\2713';
+    display: block;
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.filter-option label {
+    font-size: 1em;
+    color: #555;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.filter-count {
+    background: #007bff;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+.clear-filters {
+    width: 100%;
+    padding: 12px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.clear-filters:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.close-sidebar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .close-sidebar {
+        display: block;
+    }
+}
+
+/* Product Cards */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05); /* scale both X & Y */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* optional */
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.stock-status {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.stock-status.in-stock {
+    color: #28a745;
+}
+
+.stock-status.out-of-stock {
+    color: #dc3545;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+    flex-grow: 1;
+      white-space: nowrap; /* prevents text wrapping to new line */
+  word-break: break-word; /* breaks long words if needed */
+    margin: 0 0 4px 0;
+  padding: 0;
+}
+
+
+
+.price {
+  text-align: left;
+  color: #999;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: oblique;
+  font-family: "Franklin Gothic Medium";
+}
+.best-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+
+.product-hidden {
+    display: none !important;
+}
+
+.no-products-message {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    display: none;
+}
+
+/* Responsive Grid System */
+@media (max-width: 575.98px) {
+    /* Extra small devices (phones) */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .product-name {
+        font-size: 12px;
+        -webkit-line-clamp: 3;
+    }
+    
+    .best-price {
+        font-size: 1rem;
+    }
+    
+    .old-price {
+        font-size: 0.8rem;
+    }
+    
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.375rem 0.5rem;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .discount-badge {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    /* Small devices (landscape phones) */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .product-name {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Medium devices (tablets) */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    
+    .product-name {
+        font-size: 14px;
+    }
+    
+    .best-price {
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    /* Large devices (desktops) */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    /* Extra large devices */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 25px;
+    }
+    
+    .product-name {
+        font-size: 15px;
+    }
+    
+    .best-price {
+        font-size: 1.3rem;
+    }
+}
+
+/* Layout adjustments */
+@media (max-width: 767.98px) {
+    .main-content {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    .container-fluid {
+        padding: 0;
+        animation: fadeIn 0.3s ease-in;
+    }
+    
+    .filter-status-container {
+        padding: 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar-container {
+        width: 280px;
+        flex-shrink: 0;
+        padding-right: 20px;
+    }
+    
+    .main-content {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* Image responsiveness */
+.product-image {
+    max-height: 120px;
+    width: 100%;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+    .product-image {
+        max-height: 140px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .product-image {
+        max-height: 160px;
+    }
+}
+
+/* Button responsiveness */
+.btn-buy {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .btn-buy {
+        font-size: 0.9rem;
+    }
+}
+
+/* Header and status adjustments */
+.page-header {
+    margin-bottom: 20px;
+}
+
+.page-header h2 {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 575.98px) {
+    .page-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+.alert-info {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+}
+
+@media (max-width: 575.98px) {
+    .alert-info {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+}
+   .like-btn {
+  position: absolute;
+  bottom: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  background: whitesmoke;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  z-index: 10; /* Ensures it's above other elements */
+}
+.like-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255,255,255,1) !important;
+    
+}
+
+.like-btn.liked i {
+    color: #e91e63 !important;
+}
+.wishlist-toast {
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    z-index: 1000;
+    min-width: 300px;
+    background-color: green !important;
+    color: white !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  /* State for the toast when it is SHOWN */
+  .wishlist-toast.show {
+    opacity: 1;
+  }</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="filter-sidebar">
+
+
+                <!-- Category Filter -->
+                <div class="filter-section">
+                    <h6><i class="fas fa-layer-group"></i> Category</h6>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-groceries" data-filter="category" data-value="groceries">
+                        <label for="cat-groceries">Groceries <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-electronics" data-filter="category" data-value="electronics">
+                        <label for="cat-electronics">Electronics <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-cloth" data-filter="category" data-value="cloth">
+                        <label for="cat-cloth">Cloth <span class="filter-count">(0)</span></label>
+                    </div>
+                </div>
+
+                <!-- Subcategory Filter -->
+                <div class="filter-section">
+                    <h6><i class="fas fa-tags"></i> Subcategory</h6>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-fruits" data-filter="subcategory" data-value="fruits">
+                        <label for="sub-fruits">Fruits <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-vegetables" data-filter="subcategory" data-value="vegetables">
+                        <label for="sub-vegetables">Vegetables <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-dairy" data-filter="subcategory" data-value="dairy">
+                        <label for="sub-dairy">Dairy <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-snacks" data-filter="subcategory" data-value="snacks">
+                        <label for="snacks">Snacks <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-t-shirt" data-filter="subcategory" data-value="t-shirt">
+                        <label for="t-shirt">T-shirt <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sub-laptop" data-filter="subcategory" data-value="laptop">
+                        <label for="laptop">Laptop <span class="filter-count">(0)</span></label>
+                    </div>
+                </div>
+
+                <!-- Tag Filter -->
+                <div class="filter-section">
+                    <h6><i class="fas fa-bookmark"></i> Tags</h6>
+                    <div class="filter-option">
+                        <input type="checkbox" id="tag-new" data-filter="tag" data-value="new-arrivals">
+                        <label for="tag-new">New Arrivals <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="tag-bestseller" data-filter="tag" data-value="bestseller">
+                        <label for="tag-bestseller">Bestseller <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="tag-organic" data-filter="tag" data-value="organic">
+                        <label for="tag-organic">Organic <span class="filter-count">(0)</span></label>
+                    </div>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-section">
+                    <h6><i class="fas fa-certificate"></i> Brand</h6>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-fortune" data-filter="brand" data-value="fortune">
+                        <label for="brand-fortune">Fortune <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-samsung" data-filter="brand" data-value="samsung">
+                        <label for="brand-samsung">Samsung <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-local" data-filter="brand" data-value="local">
+                        <label for="brand-local">Local <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-nike" data-filter="brand" data-value="nike">
+                        <label for="brand-nike">Nike <span class="filter-count">(0)</span></label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-hp" data-filter="brand" data-value="hp">
+                        <label for="brand-hp">HP <span class="filter-count">(0)</span></label>
+                    </div>
+                </div>
+                <!-- Clear Filters Button -->
+                <button class="clear-filters" onclick="clearAllFilters()">
+                    <i class="fas fa-times-circle"></i> Clear All Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Content -->
+        <div class="col-md-9">
+            <div class="container rounded">
+                <div>
+                    <h2 class="mt-4">Product Catalog</h2>
+                    <div class="alert alert-info">
+                        <strong>Filter Status:</strong> <span id="filter-status">No filters applied</span>
+                    </div>
+                </div>
+
+                <!-- No Products Message -->
+                <div id="no-products-message" class="no-products-message">
+                    <i class="fas fa-search fa-3x mb-3"></i>
+                    <h4>No products found</h4>
+                    <p>Try adjusting your filters or search terms to see more products.</p>
+                </div>
+
+                <!-- Product Grid -->
+                <div id="product-grid" class="row g-3">
+                    <!-- Product 1 - Apple (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="fruits" data-tag="organic" data-brand="local" data-name="apple">
+                        <a href="{% url 'store:product_detail' %}" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/apple.jpg' %}" class="img-fluid mb-2" alt="Apple"
+                                            style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-20%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Fresh Red Apple from Mustang</h6>
+                                    <p class="stock-status out-of-stock">
+                                        <i class="fas fa-times-circle"></i> Out of stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            250</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 200</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Product 1 - Apple (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="cloth"
+                        data-subcategory="t-shirt" data-tag="" data-brand="nike" data-name="t-shirt">
+                        <a href="{% url 'store:product_detail1' %}" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/T-shirt1.jpg' %}" class="img-fluid mb-2" alt="Apple"
+                                            style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-30%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">T-shirt</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            1500</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 1200</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Product 2 - Basmati Rice (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="electronics"
+                        data-subcategory="laptop" data-tag="" data-brand="hp" data-name="laptop">
+                        <a href="{% url 'store:product_detail2' %}" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/laptop2.jpg' %}" class="img-fluid mb-2" alt="laptop"
+                                            style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-30%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Laptop</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            150000</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 120000</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Product 2 - Basmati Rice (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="dairy" data-tag="organic" data-brand="local" data-name="basmati rice">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/basmati_rice.jpg' %}" class="img-fluid mb-2"
+                                            alt="basmati rice" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-15%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Premium Basmati Rice</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            850</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 720</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 3 - Cooking Oil (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="" data-tag="" data-brand="fortune" data-name="sunflower oil">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/Sunflower_oil.jpg' %}" class="img-fluid mb-2"
+                                            alt="sunflower oil" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-25%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Fortune Sunflower Oil</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            320</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 240</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 4 - Spices (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="" data-tag="organic" data-brand="local" data-name="garam masala">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/garam_masala.jpg' %}" class="img-fluid mb-2"
+                                            alt="Garam Masala" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-10%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Curry Master Garam Masala</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            150</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 135</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 5 - Lentils (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="dairy" data-tag="" data-brand="amrit" data-name="masoor dal">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/musuri_dal.jpg' %}" class="img-fluid mb-2"
+                                            alt="Masoor Dal" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-12%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Amrit Masoor Dal</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            180</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 158</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 6 - Snacks (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="snacks" data-tag="" data-brand="haldiram" data-name="mixture">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/Haldiram.jpg' %}" class="img-fluid mb-2"
+                                            alt="Haldiram's Mixture" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-18%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Haldiram's Mixture</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            120</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 98</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 7 - Regular Rice (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="dairy" data-tag="organic" data-brand="local" data-name="white rice">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/white_rice.jpg' %}" class="img-fluid mb-2"
+                                            alt="White Rice" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-8%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Akshar White Rice</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            680</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 625</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 8 - Refrigerator (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="electronics"
+                        data-subcategory="" data-tag="" data-brand="samsung" data-name="refrigerator">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/Mini_Refrigerator.jpg' %}" class="img-fluid mb-2"
+                                            alt="Mini Refrigerator" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-30%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">Samsung Mini Refrigerator</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            25,000</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 17,500</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i> Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Product 9 - Noodles (Fixed data attributes) -->
+                    <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4 product-item" data-category="groceries"
+                        data-subcategory="snacks" data-tag="" data-brand="local" data-name="noodles">
+                        <a href="" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm rounded ">
+                                <div class="card-body">
+                                    <div class="text-center position-relative">
+                                        <img src="{% static 'images/2pm.jpg' %}" class="img-fluid mb-2"
+                                            alt="2pm noodles" style="max-height:160px; object-fit:contain;">
+                                        <div class="discount-badge">-5%</div>
+                                        <button class="like-btn position-absolute" onclick="toggleLike(this)">
+                                            <i class="fas fa-heart" style="color: #ccc; font-size: 14px;"></i>
+                                        </button>
+                                    </div>
+                                    <h6 class="product-name">2pm Instant Noodles</h6>
+                                    <p class="stock-status in-stock">
+                                        <i class="fas fa-check-circle"></i> In stock
+                                    </p>
+                                    <div class="price">
+                                        <span class="old-price text-muted text-decoration-line-through me-2">Rs.
+                                            40</span>
+                                        <span class="best-price fw-bold text-danger">Rs. 38</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <button type="button" class="btn btn-sm btn-success w-100"><i class="bi bi-cart3"></i>   Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script> // Active filters
+        let activeFilters = {
+            category: [],
+            subcategory: [],
+            tag: [],
+            brand: []
+        };
+
+        // Initialize when page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeFilters();
+            updateFilterCounts();
+            addSearchFunctionality();
+        });
+
+        // Initialize filter checkboxes
+        function initializeFilters() {
+            document.querySelectorAll("input[type=checkbox][data-filter]").forEach(cb => {
+                cb.addEventListener("change", handleFilterChange);
+            });
+        }
+
+        // Handle filter change
+        function handleFilterChange(e) {
+            const filter = e.target.dataset.filter;
+            const value = e.target.dataset.value;
+            
+            if (e.target.checked) {
+                if (!activeFilters[filter].includes(value)) {
+                    activeFilters[filter].push(value);
+                }
+            } else {
+                activeFilters[filter] = activeFilters[filter].filter(v => v !== value);
+            }
+            
+            applyFilters();
+            updateFilterStatus();
+            updateFilterCounts();
+        }
+
+        // Apply filters to products
+        function applyFilters() {
+            const products = document.querySelectorAll(".product-item");
+            let visibleCount = 0;
+
+            products.forEach(product => {
+                let show = true;
+
+                // Check each filter type
+                for (let filterType of Object.keys(activeFilters)) {
+                    if (activeFilters[filterType].length === 0) continue;
+
+                    const productValue = product.dataset[filterType] || "";
+                    if (!activeFilters[filterType].includes(productValue)) {
+                        show = false;
+                        break;
+                    }
+                }
+
+                // Apply search filter if exists
+                const searchTerm = document.getElementById("product-search")?.value.toLowerCase() || "";
+                if (show && searchTerm) {
+                    const productName = (product.dataset.name || "").toLowerCase();
+                    const productText = product.querySelector(".product-name").textContent.toLowerCase();
+                    if (!productName.includes(searchTerm) && !productText.includes(searchTerm)) {
+                        show = false;
+                    }
+                }
+
+                product.style.display = show ? "block" : "none";
+                if (show) visibleCount++;
+            });
+
+            // Show/hide no products message
+            document.getElementById("no-products-message").style.display =
+                visibleCount === 0 && (hasActiveFilters() || hasSearchTerm()) ? "block" : "none";
+        }
+
+        // Check if any filters are active
+        function hasActiveFilters() {
+            return Object.values(activeFilters).some(filterArray => filterArray.length > 0);
+        }
+
+        // Check if search term exists
+        function hasSearchTerm() {
+            const searchInput = document.getElementById("product-search");
+            return searchInput && searchInput.value.trim() !== "";
+        }
+
+        // Update filter status display
+        function updateFilterStatus() {
+            const totalFilters = Object.values(activeFilters).reduce((total, filterArray) => total + filterArray.length, 0);
+            const statusElement = document.getElementById("filter-status");
+            
+            if (totalFilters === 0) {
+                statusElement.textContent = "No filters applied";
+                statusElement.parentElement.className = "alert alert-info";
+            } else {
+                statusElement.textContent = `${totalFilters} filter(s) applied`;
+                statusElement.parentElement.className = "alert alert-success";
+            }
+        }
+
+        // Update filter counts
+        function updateFilterCounts() {
+            const products = document.querySelectorAll(".product-item");
+
+            document.querySelectorAll("input[type=checkbox][data-filter]").forEach(checkbox => {
+                const filter = checkbox.dataset.filter;
+                const value = checkbox.dataset.value;
+                let count = 0;
+
+                products.forEach(product => {
+                    if (product.dataset[filter] === value) {
+                        count++;
+                    }
+                });
+
+                const countElement = checkbox.parentElement.querySelector(".filter-count");
+                if (countElement) {
+                    countElement.textContent = `(${count})`;
+                    countElement.style.display = count > 0 ? "inline" : "none";
+                }
+            });
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            // Reset active filters
+            activeFilters = { category: [], subcategory: [], tag: [], brand: [] };
+            
+            // Uncheck all checkboxes
+            document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
+            
+            // Clear search
+            const searchInput = document.getElementById("product-search");
+            if (searchInput) searchInput.value = "";
+            
+            // Show all products
+            document.querySelectorAll(".product-item").forEach(product => product.style.display = "block");
+            
+            // Hide no products message
+            document.getElementById("no-products-message").style.display = "none";
+            
+            // Update status and counts
+            updateFilterStatus();
+            updateFilterCounts();
+        }
+
+        // Add search functionality
+        function addSearchFunctionality() {
+            const searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.id = "product-search";
+            searchInput.className = "form-control mb-3";
+            searchInput.placeholder = "🔍 Search products...";
+
+            searchInput.addEventListener("input", function() {
+                applyFilters(); // Use the main filter function which now includes search
+            });
+
+            const productGrid = document.getElementById("product-grid");
+            productGrid.parentNode.insertBefore(searchInput, productGrid);
+        }
+        function toggleLike(button) {
+    // Prevent the link from being followed
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const isLiked = button.classList.contains('liked');
+    button.classList.toggle('liked');
+    
+    // Get product details
+    const productItem = button.closest('.product-item');
+    
+    // Show feedback message
+    if (!isLiked) {
+        showWishlistMessage(`<i class="bi bi-suit-heart-fill"></i> &nbsp; Added to Wishlist!`, 'success');
+       
+    } else {
+        showWishlistMessage(`<i class="bi bi-x-circle"></i> &nbsp; Removed from Wishlist!`, 'info');
+       
+    }
+    
+    // Animation effect
+    button.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        button.style.transform = 'scale(1)';
+    }, 150);
+}
+
+ function showWishlistMessage(message, type) {
+    // Create toast notification
+    const toast = document.createElement('div');
+
+    // Use the base Bootstrap alert classes + the custom CSS class 'wishlist-toast'
+    toast.className = `alert alert-${type} position-fixed wishlist-toast`;
+
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            ${message}
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Show toast by adding the 'show' class, which triggers the CSS transition
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+
+    // Hide and remove toast after 3 seconds
+    setTimeout(() => {
+      // Hide toast by removing the 'show' class
+      toast.classList.remove('show');
+
+      // Wait for the 0.3s CSS transition to complete, then remove from DOM
+      const transitionDuration = 300;
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
+      }, transitionDuration);
+    }, 3000);
+  }</script>
+{% endblock %}

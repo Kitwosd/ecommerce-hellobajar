@@ -1,0 +1,25 @@
+{% load static %}
+    {% block extra_css %}{% endblock %}
+
+
+
+    <!-- Navigation -->
+    {% include 'navbar.html' %}
+    
+    <!-- Main Content -->
+    <main>
+        
+
+    
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+
+     {% include 'footer.html' %}
+    
+    {% block extra_js %}{% endblock %}
+
+

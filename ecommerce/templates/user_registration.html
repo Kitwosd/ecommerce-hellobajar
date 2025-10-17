@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}user_home - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/.css' %}" rel="stylesheet">
+<style>
+
+.auth-wrapper {
+    margin: 150px;
+}
+
+.auth-card {
+  background: #f8f9fa;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+margin-left: 300px !important;
+margin-right: 300px !important;
+border-radius: 5px;
+
+}
+.child-auth-card {
+  width: 700px; /* You can adjust this value as needed */
+  background-color: lightblue; /* For visibility */
+  padding: 80px;
+}
+
+.close-btn {
+  position:absolute;
+  top:15px;
+  right:20px;
+  background:none;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+  color:#888;
+}
+
+.auth-title {
+  margin-bottom:25px;
+  font-weight: bold;
+  color:#000000;
+  text-align:center;
+}
+
+.input-group {
+  position:relative;
+  margin-bottom:18px;
+}
+
+.input-icon {
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+  color:#666;
+}
+
+.input-group input {
+  width:100%;
+  padding:12px 12px 12px 40px;
+  border:none;
+  border-bottom:1px solid #ccc;
+  outline:none;
+  font-size:14px;
+  transition:border-color .3s;
+}
+
+.input-group input:focus { border-color:#7e22ce; }
+
+.form-options {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  font-size:13px;
+}
+
+.form-options input[type="checkbox"] { margin-right:4px; }
+
+.link, .switch-btn {
+  color:#7e22ce;
+  background:none;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  font-weight:500;
+  padding:0;
+}
+
+.link:hover, .switch-btn:hover { text-decoration:underline; }
+
+.btn-primary {
+  width:100%;
+  padding:12px 0;
+  background:#7e22ce;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:16px;
+  cursor:pointer;
+  transition:background .3s;
+}
+
+.btn-primary:hover { background:#6515b0; }
+
+.switch-text {
+  margin-top:20px;
+  font-size:14px;
+  color:#444;
+  text-align:center;
+}
+
+.hidden { display:none; }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card ">
+    <button class="close-btn">&times;</button>
+    <div class="form-block" id="loginForm">
+      <h2 class="auth-title">Login</h2>
+      <form onsubmit="loginUser(event)">
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <div class="form-options">
+          <label><input type="checkbox"> Remember me</label>
+          <a href="#" class="link" onclick="showForgotPassword()">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary">Login Now</button>
+      </form>
+      <p class="switch-text">
+        Not a member?
+        <button class="switch-btn" onclick="showSignup()">Signup Now</button>
+      </p>
+    </div>
+    <div class="form-block hidden" id="signupForm">
+      <h2 class="auth-title">Sign Up</h2>
+      <form>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+          <input type="email" placeholder="name@mail.com" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" placeholder="Password" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" placeholder="Confirm Password" required>
+        </div>
+        <button type="submit" class="btn-primary">Create Account</button>
+      </form>
+      <p class="switch-text">
+        Already have an account?
+        <button class="switch-btn" onclick="showLogin()">Login Now</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script> function loginUser(event) {
+    event.preventDefault(); // prevents the form from reloading the page
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    // Example check (replace with real authentication)
+    if (email === "admin@gmail.com" && password === "12345678@") {
+      alert("Login successful!");
+      // Redirect to Laravel route. Note: The URL helper works in Laravel Blade files, not static HTML.
+      window.location.href = "/home"; // Simplified for a generic example
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+
+  function showLogin() {
+    document.getElementById('signupForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+  }
+
+  function showSignup() {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('signupForm').classList.remove('hidden');
+  }
+
+  function showForgotPassword() {
+    alert('Forgot password functionality would be implemented here.');
+  }</script>
+{% endblock %}

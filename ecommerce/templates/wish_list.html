@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}cat.fruit - hello_bajar{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="{% static 'css/wish_list.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+ <div class="container-fluid">
+    <div class="row">
+      
+      <!-- Sidebar -->
+      <div class="col-md-3 col-lg-2 dashboard-menu">
+        <div class="list-group">
+          <a href="{% url 'store:user_home' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-chart-line"></i> Dashboard
+          </a>
+          <a href="{% url 'store:user_order' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-bag-shopping"></i> Order
+          </a>
+          <a href="{% url 'store:wish_list' %}" class="list-group-item list-group-item-action active ">
+            <i class="fa fa-heart"></i> Wishlist
+          </a>
+          <a href="{% url 'store:loyalty' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-coins"></i> Loyalty Points
+          </a>
+          <a href="{% url 'store:user_address' %}" class="list-group-item list-group-item-action">
+            <i class="fa fa-location-dot"></i> My Address
+          </a>
+          <a href="{% url 'store:user_detail' %}" class="list-group-item list-group-item-action ">
+            <i class="fa fa-user"></i> Account Details
+          </a>
+          <a href="" class="list-group-item list-group-item-action">
+            <i class="fa fa-right-from-bracket"></i> Log Out
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 col-lg-8 px-4 mx-5 dashboard-content">
+        <h2>Your Wish List</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle ">
+            <thead class="table-light">
+              <tr>
+                <th>PRODUCT</th>
+                <th>ADDED ON</th>
+                <th>PRICE</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Example Row -->
+              <tr>
+                <td>1</td>
+                <td>20 Sep</td>
+                <td>Rs. 150.00</td>
+                <td>
+                    <button type="submit" class="user-btn">Add to Cart</button>
+                 <button type="submit" class="user-btn">Remove</button>
+                </td>
+              </tr>
+             
+              <!-- More rows can be added dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
